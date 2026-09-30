@@ -1,0 +1,997 @@
+<title>Ο Κόσμος του Ποντικούλη</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap">
+<style>
+/* Layout: one full-screen "picture book" world — start card → map with 10 stations → one game stage fitted to the screen. Single bright look on purpose (a children's game), so no dark variant. */
+:root{
+  --ink:#35285a;        /* outlines + text, deep plum like the sprites' outlines */
+  --paper:#fffaf0;      /* cards */
+  --sun:#ffc93c;        /* main buttons, current station */
+  --sun-deep:#e9a400;
+  --leaf:#4db35a;       /* done / correct */
+  --sky:#a9defa;        /* page ground */
+  --berry:#ff5d8f;      /* highlights */
+  --lock:#dcd7ea;
+  --veil:rgba(53,40,90,.38);
+  --white:#ffffff;
+  --font:"M PLUS Rounded 1c","Trebuchet MS","Segoe UI",system-ui,sans-serif;
+  --cur:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath d='M4 3 L4 33 L12 25 L18 37 L23.5 34.5 L17.5 22.5 L28.5 22.5 Z' fill='%23ffd23f' stroke='%2335285a' stroke-width='2.6' stroke-linejoin='round'/%3E%3C/svg%3E") 4 3, auto;
+  color-scheme:light;
+}
+html,body{height:100%}
+[hidden]{display:none !important}
+body{margin:0;background:var(--sky);color:var(--ink);font-family:var(--font);overflow:hidden;-webkit-user-select:none;user-select:none}
+.bigcur, .bigcur *{cursor:var(--cur) !important}
+img{-webkit-user-drag:none;max-width:100%}
+button{font-family:inherit;color:inherit}
+:focus-visible{outline:4px solid var(--berry);outline-offset:3px}
+#app{position:fixed;inset:0;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column}
+
+/* buttons */
+.btn{font-weight:800;font-size:1.25rem;padding:.6em 1.3em;border-radius:999px;border:3px solid var(--ink);background:var(--sun);box-shadow:0 5px 0 var(--ink);cursor:pointer;transition:transform .08s, box-shadow .08s;white-space:nowrap}
+.btn:hover{filter:brightness(1.05)}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--ink)}
+.btn.green{background:var(--leaf);color:var(--white)}
+.btn.white{background:var(--white)}
+.btn.big{font-size:1.6rem}
+.ibtn{width:52px;height:52px;border-radius:50%;border:3px solid var(--ink);background:var(--white);box-shadow:0 4px 0 var(--ink);font-size:1.5rem;display:grid;place-items:center;cursor:pointer;flex:none;padding:0}
+.ibtn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+
+/* start */
+#start{background:var(--sky) center/cover no-repeat;align-items:center;justify-content:safe center;padding:16px;overflow:auto}
+#start::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.35))}
+.start-in{position:relative;display:flex;align-items:center;gap:clamp(8px,3vw,40px);flex-wrap:wrap;justify-content:center;max-width:980px}
+.start-in .hero{width:clamp(150px,26vw,300px);animation:wave 2.4s ease-in-out infinite;transform-origin:50% 100%;filter:drop-shadow(0 8px 0 rgba(53,40,90,.18))}
+.start-card{background:var(--paper);border:4px solid var(--ink);border-radius:32px;padding:clamp(18px,3vw,34px);box-shadow:0 10px 0 var(--ink);max-width:520px;display:flex;flex-direction:column;gap:16px}
+.logo{margin:0;font-weight:800;font-size:clamp(2rem,5vw,3.3rem);line-height:1.05;text-wrap:balance}
+.logo span{color:var(--berry);display:block}
+.start-card p{margin:0;font-size:1.2rem;font-weight:700;line-height:1.4}
+.name-row{display:flex;flex-direction:column;gap:8px}
+.name-row label{font-weight:800;font-size:1.25rem}
+#nameIn{font:800 1.6rem var(--font);color:var(--ink);padding:.4em .7em;border:3px solid var(--ink);border-radius:18px;background:var(--white);min-width:0;width:100%;box-sizing:border-box}
+#nameIn:focus{outline:4px solid var(--sun);outline-offset:2px}
+.hint-small{font-size:1rem !important;font-weight:500 !important;opacity:.8}
+
+/* map */
+.topbar{display:flex;align-items:center;gap:12px;padding:10px 16px;background:var(--paper);border-bottom:4px solid var(--ink);flex:none}
+.topbar .who{flex:1;min-width:0;font-weight:800;font-size:clamp(1.05rem,2.4vw,1.5rem);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pill{font-weight:800;font-size:1.15rem;background:var(--sun);border:3px solid var(--ink);border-radius:999px;padding:.25em .8em;white-space:nowrap;font-variant-numeric:tabular-nums}
+.fit-wrap{flex:1;min-height:0;position:relative;display:grid;place-items:center;padding:12px 16px 16px}
+.map{position:relative;background:center/100% 100% no-repeat;border:4px solid var(--ink);border-radius:22px;box-shadow:0 8px 0 rgba(53,40,90,.3);box-sizing:border-box;max-width:100%}
+.spot{position:absolute;transform:translate(-50%,-50%);width:calc(var(--u)*6.3);height:calc(var(--u)*6.3);border-radius:50%;border:calc(var(--u)*.45) solid var(--ink);background:var(--white);font-weight:800;font-size:calc(var(--u)*2.9);display:grid;place-items:center;cursor:pointer;padding:0;box-shadow:0 calc(var(--u)*.4) 0 var(--ink);font-variant-numeric:tabular-nums}
+.spot.done{background:var(--leaf);color:var(--white)}
+.spot.open{background:var(--sun);animation:pulse 1.3s ease-in-out infinite}
+.spot.locked{background:var(--lock);color:#8a83a3;cursor:not-allowed}
+.spot .badge{position:absolute;right:-42%;top:-42%;width:62%;height:62%;border-radius:50%;background:var(--white);border:calc(var(--u)*.3) solid var(--ink);display:grid;place-items:center;overflow:hidden}
+.spot .badge img{width:88%}
+.spot .badge .emo{font-size:calc(var(--u)*1.9);line-height:1}
+.spot .stars{position:absolute;top:100%;left:50%;transform:translateX(-50%);margin-top:calc(var(--u)*.3);font-size:calc(var(--u)*1.7);letter-spacing:-.05em;color:var(--sun);-webkit-text-stroke:calc(var(--u)*.18) var(--ink);paint-order:stroke;white-space:nowrap;line-height:1}
+.spot .stars i{font-style:normal;color:var(--white)}
+.spot .lk{position:absolute;bottom:-18%;right:-18%;font-size:calc(var(--u)*2)}
+.spot .tip{position:absolute;bottom:125%;left:50%;transform:translateX(-50%) scale(.8);background:var(--paper);color:var(--ink);border:3px solid var(--ink);border-radius:14px;padding:.3em .7em;font-size:max(14px,calc(var(--u)*1.5));white-space:nowrap;opacity:0;pointer-events:none;transition:.15s;z-index:5}
+.spot:hover .tip,.spot:focus-visible .tip{opacity:1;transform:translateX(-50%) scale(1)}
+.map-mascot{position:absolute;width:calc(var(--u)*8);transform:translate(-50%,-100%);pointer-events:none;animation:hop 1.6s ease-in-out infinite;filter:drop-shadow(0 4px 0 rgba(53,40,90,.25));z-index:3}
+.castle{position:absolute;left:88.7%;top:25%;transform:translate(-50%,-50%);width:calc(var(--u)*7.4);height:calc(var(--u)*7.4);border-radius:50%;border:calc(var(--u)*.45) solid var(--ink);background:var(--lock);font-size:calc(var(--u)*3.8);display:grid;place-items:center;cursor:pointer;padding:0;box-shadow:0 calc(var(--u)*.4) 0 var(--ink)}
+.castle.ready{background:var(--sun);animation:pulse 1.1s ease-in-out infinite}
+.say{position:absolute;background:var(--paper);border:3px solid var(--ink);border-radius:18px;padding:.45em .8em;font-weight:800;font-size:max(15px,calc(var(--u)*1.7));max-width:40%;z-index:4;box-shadow:0 4px 0 var(--ink);line-height:1.25}
+
+/* game */
+.gtitle{flex:1;min-width:0;display:flex;align-items:center;gap:10px}
+.gtitle h2{margin:0;font-size:clamp(1.05rem,2.5vw,1.6rem);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chip{font-size:.9rem;font-weight:800;background:var(--berry);color:var(--white);border-radius:999px;padding:.2em .7em;white-space:nowrap}
+.gprog{position:relative;width:clamp(110px,22vw,280px);height:30px;border:3px solid var(--ink);border-radius:999px;background:var(--white);overflow:hidden;flex:none}
+.gprog b{position:absolute;inset:0 auto 0 0;width:0;background:var(--leaf);transition:width .25s}
+.gprog span{position:absolute;inset:0;display:grid;place-items:center;font-weight:800;font-size:1rem;font-variant-numeric:tabular-nums}
+.stage{position:relative;overflow:hidden;border:4px solid var(--ink);border-radius:22px;box-shadow:0 8px 0 rgba(53,40,90,.3);background:var(--white) center/100% 100% no-repeat;touch-action:none;box-sizing:border-box;max-width:100%}
+.sp{position:absolute;transform:translate(-50%,-50%)}
+.sp > img{display:block;width:100%;pointer-events:none}
+.sp.bottom{transform:translate(-50%,-100%)}
+.ovl{position:absolute;inset:0;display:grid;place-items:center;background:var(--veil);z-index:50;padding:16px}
+.card{background:var(--paper);border:4px solid var(--ink);border-radius:28px;padding:clamp(16px,3vw,28px);box-shadow:0 8px 0 var(--ink);max-width:min(640px,100%);display:flex;align-items:center;gap:clamp(10px,2.5vw,24px);flex-wrap:wrap;justify-content:center;box-sizing:border-box;animation:popin .35s cubic-bezier(.2,1.6,.4,1)}
+.card > img{width:clamp(90px,18vw,170px)}
+.card .txt{flex:1;min-width:220px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.card h3{margin:0;font-size:clamp(1.4rem,3.4vw,2.1rem);font-weight:800;line-height:1.1;text-wrap:balance}
+.card p{margin:0;font-size:clamp(1.05rem,2.3vw,1.35rem);font-weight:700;line-height:1.4}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.winstars{display:flex;gap:6px}
+.winstars img{width:clamp(44px,8vw,70px);animation:popin .5s cubic-bezier(.2,1.6,.4,1) backwards}
+.winstars img.off{filter:grayscale(1) opacity(.35)}
+.hint{position:absolute;left:50%;top:3%;transform:translateX(-50%);background:var(--paper);border:3px solid var(--ink);border-radius:18px;padding:.35em .9em;font-weight:800;font-size:calc(var(--u)*2.4);z-index:40;white-space:nowrap;box-shadow:0 4px 0 var(--ink);pointer-events:none;animation:popin .3s cubic-bezier(.2,1.6,.4,1)}
+.fx{position:absolute;transform:translate(-50%,-50%);pointer-events:none;font-size:calc(var(--u)*4);line-height:1;z-index:30;animation:fxup 1s ease-out forwards}
+.flower{position:absolute;transform:translate(-50%,-50%);pointer-events:none;font-size:calc(var(--u)*3.4);line-height:1;animation:bloom 3.2s ease-out forwards}
+.confetti{position:absolute;top:-4%;width:14px;height:20px;border-radius:3px;z-index:60;pointer-events:none;animation:fall linear forwards}
+
+/* 1 butterfly */
+.bf{width:calc(var(--u)*13);z-index:3;pointer-events:none}
+.bf > img{animation:flap .35s ease-in-out infinite alternate}
+.bf-ring{position:absolute;transform:translate(-50%,-50%);width:calc(var(--u)*24);height:calc(var(--u)*24);border-radius:50%;border:calc(var(--u)*.5) dashed rgba(255,255,255,.95);background:rgba(255,255,255,.18);z-index:2;pointer-events:none;transition:background .2s,border-color .2s}
+.bf-ring.on{border-style:solid;border-color:var(--leaf);background:rgba(120,230,120,.28);box-shadow:0 0 0 calc(var(--u)*.6) rgba(255,255,255,.6)}
+/* 2 bubbles */
+.bubble{position:absolute;transform:translate(-50%,-50%);border-radius:50%;cursor:pointer;background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.95) 0 9%,rgba(255,255,255,.35) 10% 22%,transparent 23%),radial-gradient(circle at 50% 50%,rgba(170,225,255,.12) 55%,rgba(150,120,255,.45) 72%,rgba(120,220,255,.75) 86%,rgba(255,255,255,.9) 97%);box-shadow:inset -6px -8px 18px rgba(255,140,220,.35),0 4px 10px rgba(53,40,90,.15);display:grid;place-items:center}
+.bubble span{font-size:calc(var(--u)*4.5);opacity:.9;pointer-events:none}
+.bubble.popped{animation:popb .3s ease-out forwards;pointer-events:none}
+/* 3 wake */
+.night{position:absolute;inset:0;background:#1b2360;opacity:.55;pointer-events:none;transition:opacity .8s;z-index:1}
+.moon{position:absolute;right:6%;top:6%;font-size:calc(var(--u)*7);z-index:2;transition:opacity .8s;pointer-events:none}
+.animal{z-index:3;cursor:pointer}
+.animal .ring{position:absolute;left:50%;top:50%;width:118%;aspect-ratio:1;transform:translate(-50%,-50%) rotate(-90deg);pointer-events:none}
+.animal .ring circle{fill:none;stroke-width:6;stroke-linecap:round}
+.animal .zz{position:absolute;right:-6%;top:-18%;font-size:calc(var(--u)*4);animation:zz 1.8s ease-in-out infinite;pointer-events:none}
+.animal.awake > img{animation:jump .6s ease-out}
+.bubble-say{position:absolute;left:50%;bottom:100%;transform:translateX(-50%);background:var(--paper);border:3px solid var(--ink);border-radius:16px;padding:.2em .6em;font-weight:800;font-size:calc(var(--u)*2.2);white-space:nowrap;animation:popin .3s cubic-bezier(.2,1.6,.4,1)}
+/* 4 moles */
+.mask{position:absolute;overflow:hidden}
+.mask img{position:absolute;left:50%;bottom:0;width:80%;transform:translate(-50%,105%);transition:transform .22s ease-out;cursor:pointer;pointer-events:auto}
+.mask.up img{transform:translate(-50%,0)}
+.mask.hit img{transform:translate(-50%,0) rotate(-12deg);filter:brightness(1.15)}
+/* 5 + 6 drag */
+.tray{position:absolute;left:18%;right:18%;top:3%;height:26%;background:rgba(255,250,240,.85);border:4px solid var(--ink);border-radius:26px}
+.food{position:absolute;transform:translate(-50%,-50%);width:calc(var(--u)*12);height:calc(var(--u)*12);border-radius:50%;background:var(--white);border:calc(var(--u)*.45) solid var(--ink);display:grid;place-items:center;font-size:calc(var(--u)*7);line-height:1;z-index:10;box-shadow:0 5px 0 rgba(53,40,90,.3)}
+.drag{cursor:grab;touch-action:none}
+.drag.held{z-index:20;scale:1.12;filter:drop-shadow(0 10px 6px rgba(0,0,0,.25))}
+.drag.back{transition:left .3s ease-out,top .3s ease-out}
+.drag.gone{transition:left .3s, top .3s, scale .35s, opacity .35s;scale:.3;opacity:0;pointer-events:none}
+.eater{width:calc(var(--u)*23);z-index:5;border-radius:24px;transition:filter .15s}
+.eater.over{filter:drop-shadow(0 0 calc(var(--u)*1) #fff) drop-shadow(0 0 calc(var(--u)*.6) var(--sun))}
+.eater.yum > img{animation:jump .6s ease-out}
+.eater.nope > img{animation:shake .45s}
+.item{width:calc(var(--u)*11);z-index:10;filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 2px #fff)}
+.zone{position:absolute;border:calc(var(--u)*.5) dashed var(--white);border-radius:22px;background:rgba(255,255,255,.18);box-sizing:border-box;transition:background .15s,border-color .15s}
+.zone.over{background:rgba(255,230,120,.45);border-color:var(--sun);border-style:solid}
+.zone .lbl{position:absolute;left:50%;top:6%;transform:translateX(-50%);background:var(--paper);border:3px solid var(--ink);border-radius:999px;padding:.15em .7em;font-weight:800;font-size:calc(var(--u)*2.3);white-space:nowrap}
+.zone .cnt{position:absolute;left:50%;bottom:6%;transform:translateX(-50%);font-size:calc(var(--u)*3);white-space:nowrap}
+.zone.nope{animation:shake .45s}
+/* 7 gifts */
+.gift{width:calc(var(--u)*15);cursor:pointer;z-index:5}
+.gift.tap > img{animation:tap .25s}
+.gift.shake > img{animation:shake .5s}
+.prize{position:absolute;left:50%;bottom:55%;width:75%;transform:translateX(-50%);animation:rise .6s cubic-bezier(.2,1.6,.4,1) both;pointer-events:none}
+.gift .one{position:absolute;right:-8%;top:-12%;background:var(--berry);color:var(--white);border:3px solid var(--ink);border-radius:50%;width:calc(var(--u)*4.4);height:calc(var(--u)*4.4);display:grid;place-items:center;font-weight:800;font-size:calc(var(--u)*2.4);animation:popin .2s}
+/* 8 + 9 + 10 svg */
+.svgfull{position:absolute;inset:0;width:100%;height:100%;display:block}
+.dot circle{fill:var(--white);stroke:var(--ink);stroke-width:5}
+.dot text{font:800 30px var(--font);fill:var(--ink);text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.dot.next circle{fill:var(--sun);animation:dotpulse .9s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+.dot.done circle{fill:var(--leaf)}
+.dot.done text{fill:var(--white)}
+.reg{stroke:var(--ink);stroke-width:5;stroke-linejoin:round;cursor:pointer;transition:fill .2s}
+.reg:hover{filter:brightness(.92)}
+.sw{stroke:var(--ink);stroke-width:5;cursor:pointer}
+.sw.sel{stroke-width:10}
+.donebtn{position:absolute;left:2%;bottom:3%;z-index:20;font-size:calc(var(--u)*2.4)}
+.eat{animation:jump .5s ease-out}
+
+/* settings / diploma */
+.setrow{display:flex;align-items:center;gap:12px;font-weight:700;font-size:1.2rem;cursor:pointer}
+.setrow input{width:28px;height:28px;accent-color:var(--leaf)}
+.setlist{display:flex;flex-direction:column;gap:14px;width:100%}
+#diploma{background:var(--sky) center/cover no-repeat;align-items:center;justify-content:safe center;padding:16px;overflow:auto;gap:18px}
+.dip{position:relative;background:var(--paper);border:6px double var(--sun-deep);outline:4px solid var(--ink);border-radius:26px;padding:clamp(18px,3vh,36px) clamp(20px,6vw,70px);text-align:center;max-width:min(760px,100%);box-sizing:border-box;box-shadow:0 12px 0 rgba(53,40,90,.35)}
+.dip .corner{position:absolute;width:clamp(40px,7vw,70px)}
+.dip .c1{left:-22px;top:-22px}.dip .c2{right:-22px;top:-22px}.dip .c3{left:-22px;bottom:-22px}.dip .c4{right:-22px;bottom:-22px}
+.dip h1{margin:0;font-size:clamp(1.6rem,4vw,2.6rem);font-weight:800;letter-spacing:.04em;color:var(--berry)}
+.dip .nm{font-size:clamp(2rem,6vw,3.8rem);font-weight:800;margin:.2em 0;border-bottom:4px dotted var(--ink);display:inline-block;padding:0 .4em;min-width:40%}
+.dip p{font-size:clamp(1.05rem,2.5vw,1.4rem);font-weight:700;margin:.4em 0;line-height:1.4;text-wrap:balance}
+.dip .mas{width:clamp(70px,12vh,120px);margin-top:4px}
+.skills{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:12px 0 4px}
+.skills span{font-size:.95rem;font-weight:800;background:var(--white);border:2px solid var(--ink);border-radius:999px;padding:.15em .6em}
+
+@keyframes pulse{0%,100%{box-shadow:0 calc(var(--u)*.4) 0 var(--ink),0 0 0 0 rgba(255,201,60,.9)}50%{box-shadow:0 calc(var(--u)*.4) 0 var(--ink),0 0 0 calc(var(--u)*1.4) rgba(255,201,60,0)}}
+@keyframes hop{0%,100%{translate:0 0}50%{translate:0 -10%}}
+@keyframes wave{0%,100%{rotate:-3deg}50%{rotate:3deg}}
+@keyframes popin{from{scale:.4;opacity:0}to{scale:1;opacity:1}}
+@keyframes fxup{0%{opacity:0;scale:.4}20%{opacity:1;scale:1.2}100%{opacity:0;translate:0 -120%;scale:1}}
+@keyframes bloom{0%{scale:0}15%{scale:1.2}25%{scale:1}75%{opacity:1}100%{opacity:0;scale:.8}}
+@keyframes flap{from{scale:1 1}to{scale:.55 1}}
+@keyframes popb{to{scale:1.5;opacity:0}}
+@keyframes zz{0%,100%{translate:0 0;opacity:.6}50%{translate:10% -25%;opacity:1}}
+@keyframes jump{0%,100%{translate:0 0}40%{translate:0 -18%}70%{translate:0 3%}}
+@keyframes shake{0%,100%{translate:0 0}20%{translate:-8% 0}40%{translate:8% 0}60%{translate:-5% 0}80%{translate:5% 0}}
+@keyframes tap{50%{scale:1.08 .92}}
+@keyframes rise{from{translate:-50% 60%;scale:.2;opacity:0}to{translate:-50% 0;scale:1;opacity:1}}
+@keyframes fall{to{translate:var(--dx) 115vh;rotate:var(--rot)}}
+@keyframes dotpulse{0%,100%{scale:1}50%{scale:1.2}}
+@media (prefers-reduced-motion: reduce){*{animation-duration:.01ms !important;animation-iteration-count:1 !important}}
+@media (max-width:620px){.chip{display:none}.gprog{width:90px}.ibtn{width:44px;height:44px;font-size:1.2rem}}
+@media print{body *{visibility:hidden}#diploma,#diploma *{visibility:visible}#diploma{position:absolute;inset:0;background:none}.noprint{display:none !important}}
+</style>
+<div id="app" class="bigcur">
+
+  <section class="screen" id="start">
+    <div class="start-in">
+      <img class="hero" data-src="mascot.png" alt="Ο Ποντικούλης χαιρετάει">
+      <form class="start-card" id="startForm">
+        <h1 class="logo">Ο Κόσμος <span>του Ποντικούλη</span></h1>
+        <p>10 παιχνίδια για να μάθεις να κουνάς, να πατάς και να σέρνεις με το ποντίκι!</p>
+        <div class="name-row">
+          <label for="nameIn">Πώς σε λένε;</label>
+          <input id="nameIn" maxlength="18" autocomplete="off" placeholder="Γράψε το όνομά σου">
+        </div>
+        <div class="row"><button class="btn green big" type="submit">Πάμε! ▶</button></div>
+        <p class="hint-small">Για γονείς και δασκάλους: η πρόοδος αποθηκεύεται σε αυτόν τον υπολογιστή.</p>
+      </form>
+    </div>
+  </section>
+
+  <section class="screen" id="mapScreen" hidden>
+    <div class="topbar">
+      <div class="who" id="who"></div>
+      <div class="pill" id="starTotal"></div>
+      <button class="ibtn" id="setBtn" title="Ρυθμίσεις" aria-label="Ρυθμίσεις">⚙️</button>
+    </div>
+    <div class="fit-wrap" id="mapWrap"><div class="map" id="map"></div></div>
+  </section>
+
+  <section class="screen" id="gameScreen" hidden>
+    <div class="topbar">
+      <button class="ibtn" id="homeBtn" title="Στον χάρτη" aria-label="Στον χάρτη">🗺️</button>
+      <div class="gtitle"><h2 id="gTitle"></h2><span class="chip" id="gSkill"></span></div>
+      <div class="gprog" id="gProg"><b></b><span></span></div>
+      <button class="ibtn" id="sayBtn" title="Άκου ξανά τι κάνω" aria-label="Οδηγίες">🔊</button>
+    </div>
+    <div class="fit-wrap" id="stageWrap"><div class="stage" id="stage"></div></div>
+  </section>
+
+  <section class="screen" id="diploma" hidden>
+    <div class="dip">
+      <img class="corner c1" data-src="star.png" alt=""><img class="corner c2" data-src="star.png" alt="">
+      <img class="corner c3" data-src="star.png" alt=""><img class="corner c4" data-src="star.png" alt="">
+      <h1>ΔΙΠΛΩΜΑ ΠΟΝΤΙΚΙΟΥ</h1>
+      <p>Το δίπλωμα αυτό απονέμεται στον/στην</p>
+      <div class="nm" id="dipName"></div>
+      <p>γιατί τα κατάφερε και στα 10 παιχνίδια στον Κόσμο του Ποντικούλη!</p>
+      <div class="skills"><span>κίνηση</span><span>κλικ</span><span>διπλό κλικ</span><span>σύρσιμο</span><span>κράτημα</span><span>ακρίβεια</span></div>
+      <p id="dipStars"></p>
+      <img class="mas" data-src="mascot_happy.png" alt="">
+    </div>
+    <div class="row noprint">
+      <button class="btn white" id="dipBack">🗺️ Στον χάρτη</button>
+      <button class="btn" id="dipPrint">🖨️ Εκτύπωση</button>
+    </div>
+  </section>
+
+</div>
+<script>
+"use strict";
+const A = n => (window.EMBED && window.EMBED[n]) || ("images/" + n);
+const $ = s => document.querySelector(s);
+const rnd = (a, b) => a + Math.random() * (b - a);
+const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+const shuffle = arr => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const PRAISE = ["Μπράβο!", "Τέλεια!", "Είσαι αστέρι!", "Υπέροχα!", "Πολύ ωραία!", "Ζήτω!"];
+
+/* ---------- storage ---------- */
+const Store = {
+  k: "pontikoulis-v1",
+  d: { name: "", stars: {}, unlockAll: false, sound: true, voice: true, bigCursor: true },
+  load() { try { const s = JSON.parse(localStorage.getItem(this.k)); if (s) Object.assign(this.d, s); } catch (e) {} },
+  save() { try { localStorage.setItem(this.k, JSON.stringify(this.d)); } catch (e) {} }
+};
+
+/* ---------- sound ---------- */
+const Snd = {
+  ctx: null,
+  c() {
+    if (!Store.d.sound) return null;
+    if (!this.ctx) { try { this.ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return null; } }
+    if (this.ctx.state === "suspended") this.ctx.resume();
+    return this.ctx;
+  },
+  tone(f, d = .15, type = "sine", vol = .2, delay = 0, f2) {
+    const c = this.c(); if (!c) return;
+    const t = c.currentTime + delay, o = c.createOscillator(), g = c.createGain();
+    o.type = type; o.frequency.setValueAtTime(f, t);
+    if (f2) o.frequency.exponentialRampToValueAtTime(f2, t + d);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(vol, t + .01); g.gain.exponentialRampToValueAtTime(0.0001, t + d);
+    o.connect(g).connect(c.destination); o.start(t); o.stop(t + d + .02);
+  },
+  pop() { this.tone(500, .09, "sine", .3, 0, 1400); },
+  tick() { this.tone(880, .05, "triangle", .08); },
+  good() { [523, 659, 784].forEach((f, i) => this.tone(f, .2, "triangle", .18, i * .08)); },
+  boop() { this.tone(260, .22, "sine", .18, 0, 170); },
+  bonk() { this.tone(300, .12, "square", .08, 0, 120); this.tone(900, .15, "triangle", .12, .05, 1300); },
+  note(i) { this.tone(392 * Math.pow(2, i / 12), .22, "triangle", .18); },
+  win() { [523, 659, 784, 1047, 784, 1047, 1319].forEach((f, i) => this.tone(f, .25, "triangle", .17, i * .11)); }
+};
+
+/* ---------- Greek voice (only if the computer has one) ---------- */
+const Voice = {
+  v: null,
+  init() {
+    try {
+      const pickV = () => { const vs = speechSynthesis.getVoices(); this.v = vs.find(v => /^el/i.test(v.lang)) || null; };
+      pickV(); speechSynthesis.addEventListener("voiceschanged", pickV);
+    } catch (e) {}
+  },
+  can() { return !!this.v; },
+  say(t) {
+    if (!Store.d.voice || !this.v) return;
+    try {
+      speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(t.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}️▶✓]/gu, ""));
+      u.voice = this.v; u.lang = this.v.lang; u.rate = .92; u.pitch = 1.15; speechSynthesis.speak(u);
+    } catch (e) {}
+  },
+  stop() { try { speechSynthesis.cancel(); } catch (e) {} }
+};
+
+/* ---------- fitting a fixed-ratio box into its wrapper ---------- */
+function fit(box, wrap, ar) {
+  const cs = getComputedStyle(wrap);
+  const aw = wrap.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+  const ah = wrap.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+  const w = Math.max(200, Math.min(aw, ah * ar));
+  box.style.width = w + "px"; box.style.height = (w / ar) + "px";
+  box.style.setProperty("--u", (box.clientWidth / 100) + "px");
+}
+
+/* ---------- screens ---------- */
+function show(id) { ["start", "mapScreen", "gameScreen", "diploma"].forEach(s => $("#" + s).hidden = s !== id); }
+const MAP_AR = 1353 / 909;
+const SPOTS = [[65.4, 86.4], [52.5, 82.0], [40.3, 77.6], [23.5, 72.6], [14.4, 60.0], [16.9, 41.6], [30.8, 28.6], [45.1, 27.5], [59.1, 34.7], [73.2, 38.5]];
+const starsOf = i => Store.d.stars[i + 1] || 0;
+const unlocked = i => Store.d.unlockAll || i === 0 || starsOf(i - 1) > 0;
+const allDone = () => GAMES.every((g, i) => starsOf(i) > 0);
+const totalStars = () => GAMES.reduce((s, g, i) => s + starsOf(i), 0);
+
+function iconHTML(g) {
+  if (g.icon.endsWith(".png")) return `<img src="${A(g.icon)}" alt="">`;
+  if (g.icon === "bubble") return `<span class="bubble" style="position:static;transform:none;width:70%;height:70%"></span>`;
+  return `<span class="emo">${g.icon}</span>`;
+}
+
+function showMap() {
+  exitGame(); show("mapScreen");
+  const nm = Store.d.name || "φίλε μου";
+  $("#who").textContent = `Γεια σου, ${nm}! 👋`;
+  $("#starTotal").textContent = `⭐ ${totalStars()} / 30`;
+  const map = $("#map"); map.innerHTML = ""; map.style.backgroundImage = `url("${A("bg_map.jpg")}")`;
+  fit(map, $("#mapWrap"), MAP_AR);
+  let current = GAMES.findIndex((g, i) => unlocked(i) && !starsOf(i));
+  GAMES.forEach((g, i) => {
+    const [x, y] = SPOTS[i], b = document.createElement("button");
+    const st = starsOf(i), open = unlocked(i);
+    b.className = "spot " + (st ? "done" : open ? "open" : "locked");
+    b.style.left = x + "%"; b.style.top = y + "%";
+    b.setAttribute("aria-label", `${i + 1}. ${g.title}`);
+    b.innerHTML = `${i + 1}<span class="badge">${iconHTML(g)}</span>` +
+      (st ? `<span class="stars">${"★".repeat(st)}<i>${"★".repeat(3 - st)}</i></span>` : "") +
+      (!open ? `<span class="lk">🔒</span>` : "") + `<span class="tip">${g.title}</span>`;
+    b.onclick = () => {
+      Snd.tick();
+      if (open) openGame(i);
+      else mapSay(`Πρώτα τελείωσε το παιχνίδι ${i}! 🔒`, i);
+    };
+    map.appendChild(b);
+  });
+  const c = document.createElement("button");
+  c.className = "castle" + (allDone() ? " ready" : ""); c.textContent = "🏆"; c.title = "Το δίπλωμά μου";
+  c.onclick = () => { if (allDone()) showDiploma(); else mapSay("Τελείωσε και τα 10 παιχνίδια για να πάρεις το δίπλωμα! 🏆", -1); };
+  map.appendChild(c);
+  const m = document.createElement("img"); m.className = "map-mascot"; m.alt = ""; m.src = A(allDone() ? "mascot_happy.png" : "mascot_point.png");
+  const at = current < 0 ? [88.7, 25] : SPOTS[current];
+  m.style.left = (at[0] - 6.5) + "%"; m.style.top = (at[1] + 3) + "%";
+  map.appendChild(m);
+  if (current === 0 && !starsOf(0)) mapSay("Πάτα τον κίτρινο κύκλο με το 1 για να ξεκινήσεις!", 0, 0);
+  else if (current > 0) mapSay(`Πάμε στο παιχνίδι ${current + 1}!`, current, 0);
+  else if (current < 0) mapSay("Τα κατάφερες σε όλα! Πάτα το 🏆 για το δίπλωμα!", -1, 0);
+}
+let sayTimer;
+function mapSay(text, i, speak = 1) {
+  const map = $("#map"); map.querySelectorAll(".say").forEach(e => e.remove());
+  const s = document.createElement("div"); s.className = "say"; s.textContent = text;
+  const at = i < 0 ? [50, -4] : SPOTS[i];
+  s.style.left = Math.min(58, Math.max(2, at[0] - 20)) + "%";
+  if (at[1] > 50) s.style.bottom = (100 - at[1] + 18) + "%"; else s.style.top = (at[1] + 7) + "%";
+  map.appendChild(s);
+  if (speak) Voice.say(text);
+  clearTimeout(sayTimer); sayTimer = setTimeout(() => s.remove(), 6000);
+}
+
+/* ---------- game runtime ---------- */
+let GEN = 0, cur = null;
+function setProgress(n, t, num = true) {
+  const p = $("#gProg"); p.querySelector("b").style.width = Math.min(100, n / t * 100) + "%";
+  p.querySelector("span").textContent = num ? `${Math.floor(n)} / ${t}` : "";
+}
+function openGame(i, skipIntro) {
+  exitGame();
+  const g = GAMES[i]; cur = { i, g, misses: 0, over: false, cleanup: () => {} };
+  show("gameScreen");
+  $("#gTitle").textContent = `${i + 1}. ${g.title}`; $("#gSkill").textContent = g.skill;
+  const st = $("#stage"); st.innerHTML = ""; st.style.backgroundImage = g.bg ? `url("${A(g.bg)}")` : "none";
+  st.style.backgroundSize = g.cover ? "cover" : "100% 100%";
+  fit(st, $("#stageWrap"), g.ar);
+  setProgress(0, 1, false);
+  document.querySelectorAll("#stageWrap .ovl, .confetti").forEach(e => e.remove());
+  if (skipIntro) return startGame();
+  const o = overlay(`<img src="${A("mascot_point.png")}" alt=""><div class="txt"><h3>${g.title}</h3><p>${g.intro}</p><button class="btn green big" id="goBtn">Πάμε! ▶</button></div>`);
+  Voice.say(g.title + ". " + g.intro);
+  o.querySelector("#goBtn").onclick = () => { Snd.tick(); o.remove(); startGame(); };
+  o.querySelector("#goBtn").focus();
+}
+function overlay(html) {
+  const o = document.createElement("div"); o.className = "ovl"; o.innerHTML = `<div class="card">${html}</div>`;
+  $("#stageWrap").appendChild(o); return o;
+}
+function startGame() { const api = makeApi(); cur.g.start(api); }
+function exitGame() {
+  GEN++; Voice.stop();
+  if (cur) { try { cur.cleanup(); } catch (e) {} cur = null; }
+  $("#stage").innerHTML = "";
+  document.querySelectorAll("#stageWrap .ovl, .confetti").forEach(e => e.remove());
+}
+function finishGame() {
+  const { i, g, misses } = cur;
+  const ok = g.ok ?? 4;
+  const stars = misses <= ok ? 3 : misses <= ok * 3 + 2 ? 2 : 1;
+  Store.d.stars[i + 1] = Math.max(starsOf(i), stars); Store.save();
+  Snd.win(); confetti();
+  setTimeout(() => {
+    if (!cur || cur.i !== i) return;
+    const praise = pick(PRAISE), nm = Store.d.name ? `, ${Store.d.name}` : "";
+    const next = i < 9 ? `<button class="btn green" id="nextBtn">Επόμενο ▶</button>` : (allDone() ? `<button class="btn green" id="dipBtn">🏆 Το δίπλωμά μου</button>` : "");
+    const o = overlay(`<img src="${A("mascot_happy.png")}" alt=""><div class="txt"><h3>${praise.replace("!", nm + "!")}</h3>
+      <div class="winstars">${[0, 1, 2].map(k => `<img src="${A("star.png")}" class="${k < stars ? "" : "off"}" style="animation-delay:${k * .18}s" alt="">`).join("")}</div>
+      <p>${stars === 3 ? "Πήρες και τα 3 αστέρια!" : "Παίξε ξανά για να πάρεις και τα 3 αστέρια!"}</p>
+      <div class="row"><button class="btn white" id="againBtn">↻ Ξανά</button><button class="btn white" id="mapBtn">🗺️ Χάρτης</button>${next}</div></div>`);
+    Voice.say(praise + " " + (Store.d.name || ""));
+    o.querySelector("#againBtn").onclick = () => openGame(i, true);
+    o.querySelector("#mapBtn").onclick = showMap;
+    const nb = o.querySelector("#nextBtn"); if (nb) { nb.onclick = () => openGame(i + 1); nb.focus(); }
+    const db = o.querySelector("#dipBtn"); if (db) db.onclick = showDiploma;
+  }, 700);
+}
+function confetti() {
+  const w = $("#app"), cols = ["#ff5d8f", "#ffc93c", "#4db35a", "#4d96ff", "#9b5de5", "#ff9f1c"];
+  for (let k = 0; k < 60; k++) {
+    const c = document.createElement("div"); c.className = "confetti";
+    c.style.left = rnd(0, 100) + "%"; c.style.background = pick(cols);
+    c.style.setProperty("--dx", rnd(-120, 120) + "px"); c.style.setProperty("--rot", rnd(-720, 720) + "deg");
+    c.style.animationDuration = rnd(1.6, 3.2) + "s"; c.style.animationDelay = rnd(0, .5) + "s";
+    w.appendChild(c); setTimeout(() => c.remove(), 4000);
+  }
+}
+
+function makeApi() {
+  const my = ++GEN, stage = $("#stage"), L = [];
+  const alive = () => my === GEN && cur && !cur.over;
+  let hintEl, hintT;
+  const api = {
+    stage, alive, sfx: Snd,
+    u: () => stage.clientWidth / 100, W: () => stage.clientWidth, H: () => stage.clientHeight,
+    el(tag, cls, parent = stage) { const e = document.createElement(tag); if (cls) e.className = cls; parent.appendChild(e); return e; },
+    sprite(name, cls, parent = stage) { const d = api.el("div", "sp " + (cls || ""), parent); const im = new Image(); im.src = A(name); im.alt = ""; im.draggable = false; d.appendChild(im); return d; },
+    put(e, x, y) { e.style.left = x + "%"; e.style.top = y + "%"; },
+    pt(e) { const r = stage.getBoundingClientRect(); const px = e.clientX - r.left - stage.clientLeft, py = e.clientY - r.top - stage.clientTop; return { px, py, x: px / stage.clientWidth * 100, y: py / stage.clientHeight * 100 }; },
+    on(t, ev, fn, o) { t.addEventListener(ev, fn, o); L.push(() => t.removeEventListener(ev, fn, o)); },
+    after(ms, fn) { const id = setTimeout(() => { if (alive()) fn(); }, ms); L.push(() => clearTimeout(id)); return id; },
+    loop(fn) {
+      let last = performance.now(), id;
+      const step = now => { if (!alive()) return; const dt = Math.min(.05, (now - last) / 1000); last = now; fn(dt, now / 1000); id = requestAnimationFrame(step); };
+      id = requestAnimationFrame(step); L.push(() => cancelAnimationFrame(id));
+    },
+    progress: setProgress,
+    miss() { if (alive()) cur.misses++; },
+    win() { if (!alive()) return; cur.over = true; finishGame(); },
+    say: t => Voice.say(t),
+    hint(text, speak = true, ms = 2600) {
+      if (hintEl) hintEl.remove(); clearTimeout(hintT);
+      hintEl = api.el("div", "hint"); hintEl.textContent = text; if (speak) Voice.say(text);
+      const h = hintEl; hintT = setTimeout(() => h.remove(), ms);
+    },
+    fx(xPct, yPct, content, cls = "fx") { const e = api.el("div", cls); e.textContent = content; api.put(e, xPct, yPct); setTimeout(() => e.remove(), 3300); return e; },
+    center(e) { const r = e.getBoundingClientRect(), s = stage.getBoundingClientRect(); return { x: (r.left + r.width / 2 - s.left - stage.clientLeft) / stage.clientWidth * 100, y: (r.top + r.height / 2 - s.top - stage.clientTop) / stage.clientHeight * 100 }; },
+    /* drag & drop: targets() -> [{el,...}], drop(target, el) -> true when accepted */
+    drag(el, home, opt) {
+      el.classList.add("drag"); api.put(el, home[0], home[1]); let on = false;
+      const hit = e => opt.targets().find(t => { const r = t.el.getBoundingClientRect(), p = 12; return e.clientX > r.left - p && e.clientX < r.right + p && e.clientY > r.top - p && e.clientY < r.bottom + p; });
+      const move = e => { const p = api.pt(e); api.put(el, Math.max(0, Math.min(100, p.x)), Math.max(0, Math.min(100, p.y))); const t = hit(e); opt.targets().forEach(tt => tt.el.classList.toggle("over", tt === t)); };
+      el.addEventListener("pointerdown", e => {
+        if (!alive() || el.dataset.done) return; e.preventDefault(); e.stopPropagation();
+        on = true; try { el.setPointerCapture(e.pointerId); } catch (_) {}
+        el.classList.remove("back"); el.classList.add("held"); Snd.tick(); move(e);
+      });
+      el.addEventListener("pointermove", e => { if (on) move(e); });
+      const end = e => {
+        if (!on) return; on = false; el.classList.remove("held");
+        opt.targets().forEach(tt => tt.el.classList.remove("over"));
+        const t = hit(e); const okd = t && alive() ? opt.drop(t, el) : false;
+        if (!okd) { el.classList.add("back"); api.put(el, home[0], home[1]); }
+      };
+      el.addEventListener("pointerup", end); el.addEventListener("pointercancel", end);
+    }
+  };
+  cur.cleanup = () => { L.forEach(f => f()); clearTimeout(hintT); };
+  api.on(stage, "contextmenu", e => e.preventDefault());
+  return api;
+}
+
+/* ================= THE 10 GAMES ================= */
+const GAMES = [
+/* 1 ---------------------------------------------------------------- */
+{ title: "Ακολούθα την πεταλούδα", icon: "butterfly.png", skill: "Κίνηση", bg: "bg_meadow.jpg", ar: 1350 / 909, ok: 99,
+  intro: "Κούνα το ποντίκι και μείνε μέσα στον κύκλο της πεταλούδας. Όσο είσαι μέσα, φυτρώνουν λουλούδια!",
+  start(api) {
+    const GOAL = 12, FL = ["🌸", "🌼", "🌷", "🌺", "💮"];
+    let got = 0, t = rnd(0, 6), px = -1e4, py = -1e4, fT = 0, outT = 0;
+    const ring = api.el("div", "bf-ring"), bf = api.sprite("butterfly.png", "bf");
+    api.on(api.stage, "pointermove", e => { const p = api.pt(e); px = p.px; py = p.py; });
+    api.on(api.stage, "pointerdown", e => { const p = api.pt(e); px = p.px; py = p.py; });
+    api.on(api.stage, "pointerleave", () => { px = py = -1e4; });
+    api.progress(0, GOAL, false);
+    api.loop(dt => {
+      t += dt * (.34 + .26 * got / GOAL);
+      const x = 50 + 30 * Math.sin(t * .9) + 7 * Math.sin(t * 2.3), y = 50 + 24 * Math.sin(t * 1.3 + 1) + 5 * Math.cos(t * 2.9);
+      api.put(bf, x, y); api.put(ring, x, y);
+      const inside = Math.hypot(px - x / 100 * api.W(), py - y / 100 * api.H()) < api.u() * 12;
+      ring.classList.toggle("on", inside);
+      if (inside) {
+        got += dt; outT = 0; fT -= dt;
+        if (fT <= 0) { fT = .3; api.fx(px / api.W() * 100, py / api.H() * 100, pick(FL), "flower"); }
+        api.progress(got, GOAL, false);
+        if (got >= GOAL) api.win();
+      } else if ((outT += dt) > 5) { outT = -6; api.hint("Έλα κοντά στην πεταλούδα! 🦋"); }
+    });
+  } },
+/* 2 ---------------------------------------------------------------- */
+{ title: "Σκάσε τις φούσκες", icon: "bubble", skill: "Κλικ", bg: "bg_sky.jpg", ar: 1350 / 909, ok: 6,
+  intro: "Βάλε το βελάκι πάνω σε μια φούσκα και πάτα το αριστερό κουμπί. Πλοπ! Σκάσε 15 φούσκες.",
+  start(api) {
+    const GOAL = 15, EM = ["🐠", "🍓", "⭐", "🐞", "🍬", "🌸", "🦆", "🍒", "🐸", "🦀"];
+    let n = 0, sT = 0; const live = new Set();
+    api.progress(0, GOAL);
+    api.on(api.stage, "pointerdown", () => api.miss());
+    function spawn() {
+      const b = api.el("div", "bubble"), size = 17 - 8 * n / GOAL;
+      b.style.width = b.style.height = `calc(var(--u)*${size})`;
+      b.innerHTML = `<span>${pick(EM)}</span>`;
+      const o = { el: b, x: rnd(10, 90), y: 115, sp: rnd(11, 14) + 5 * n / GOAL, ph: rnd(0, 6) };
+      b.addEventListener("pointerdown", e => {
+        e.stopPropagation(); if (o.dead || !api.alive()) return;
+        o.dead = true; live.delete(o); n++; Snd.pop(); b.classList.add("popped");
+        api.fx(o.cx, o.y, pick(["✨", "💦", "⭐"]));
+        setTimeout(() => b.remove(), 320); api.progress(n, GOAL);
+        if (n >= GOAL) api.win();
+      });
+      live.add(o);
+    }
+    api.loop((dt, t) => {
+      if ((sT -= dt) <= 0 && live.size < 5) { spawn(); sT = rnd(.9, 1.5); }
+      for (const o of live) {
+        o.y -= o.sp * dt; o.cx = o.x + 2.5 * Math.sin(t * 1.4 + o.ph);
+        if (o.y < -20) { o.el.remove(); live.delete(o); continue; }
+        api.put(o.el, o.cx, o.y);
+      }
+    });
+  } },
+/* 3 ---------------------------------------------------------------- */
+{ title: "Ξύπνα τα ζωάκια", icon: "bear_sleep.png", skill: "Στάση πάνω σε κάτι", bg: "bg_meadow.jpg", ar: 1350 / 909, ok: 99,
+  intro: "Τα ζωάκια κοιμούνται! Βάλε το βελάκι πάνω σε ένα ζωάκι και κράτα το εκεί, χωρίς να πατάς, μέχρι να γεμίσει ο κύκλος.",
+  start(api) {
+    const A_ = { bear: ["bear_sleep.png", "bear_awake.png", "Καλημέρα!"], cat: ["cat_sleep.png", "cat_awake.png", "Νιάου!"], owl: ["owl_sleep.png", "owl.png", "Χου-χου!"] };
+    const ROUNDS = [
+      { need: 1.4, list: [["bear", 20, 62, 23], ["cat", 50, 64, 23], ["owl", 80, 58, 17]] },
+      { need: 2, list: [["owl", 14, 45, 12], ["cat", 40, 72, 16], ["bear", 66, 50, 16], ["cat", 88, 74, 14]] }
+    ];
+    const total = ROUNDS.reduce((s, r) => s + r.list.length, 0);
+    let woke = 0, round = 0, animals = [];
+    const night = api.el("div", "night"), moon = api.el("div", "moon"); moon.textContent = "🌙";
+    api.progress(0, total);
+    function setup() {
+      const R = ROUNDS[round]; night.style.opacity = .55; moon.style.opacity = 1;
+      animals.forEach(a => a.el.remove());
+      animals = R.list.map(([k, x, y, w]) => {
+        const el = api.sprite(A_[k][0], "animal"); el.style.width = `calc(var(--u)*${w})`; api.put(el, x, y);
+        el.insertAdjacentHTML("beforeend", `<svg class="ring" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" stroke="rgba(255,255,255,.55)"/><circle class="fill" cx="50" cy="50" r="46" stroke="#ffc93c" stroke-dasharray="289" stroke-dashoffset="289"/></svg><span class="zz">💤</span>`);
+        const a = { el, k, p: 0, hov: false, awake: false, fill: el.querySelector(".fill") };
+        el.addEventListener("pointerenter", () => { a.hov = true; });
+        el.addEventListener("pointerleave", () => { a.hov = false; });
+        el.addEventListener("pointerdown", () => { a.hov = true; if (!a.awake && a.p < .05) api.hint("Μην πατάς! Μόνο κράτα το βελάκι πάνω του 🙂"); });
+        return a;
+      });
+    }
+    setup();
+    api.loop(dt => {
+      const need = ROUNDS[round].need; let left = 0;
+      for (const a of animals) {
+        if (a.awake) continue; left++;
+        const before = a.p;
+        a.p = Math.max(0, Math.min(1, a.p + (a.hov ? dt / need : -dt / (need * 1.5))));
+        a.fill.setAttribute("stroke-dashoffset", 289 * (1 - a.p));
+        if (a.hov && Math.floor(before * 4) !== Math.floor(a.p * 4)) Snd.note(Math.floor(a.p * 4) * 2);
+        if (a.p >= 1) {
+          a.awake = true; woke++; left--;
+          a.el.querySelector("img").src = A(A_[a.k][1]); a.el.classList.add("awake");
+          a.el.querySelector(".zz").remove(); a.el.querySelector(".ring").remove();
+          const s = api.el("div", "bubble-say", a.el); s.textContent = A_[a.k][2];
+          Snd.good(); api.progress(woke, total);
+          const n = ROUNDS[round].list.length, done = animals.filter(z => z.awake).length;
+          night.style.opacity = .55 * (1 - done / n); moon.style.opacity = 1 - done / n;
+        }
+      }
+      if (!left && !api._wait) {
+        api._wait = true;
+        api.after(1300, () => {
+          api._wait = false;
+          if (++round >= ROUNDS.length) api.win();
+          else { setup(); api.hint("Νύχτωσε πάλι! Ξύπνα τα ζωάκια 🌙"); }
+        });
+      }
+    });
+  } },
+/* 4 ---------------------------------------------------------------- */
+{ title: "Ο τυφλοπόντικας", icon: "mole.png", skill: "Γρήγορο κλικ", bg: "bg_garden.jpg", ar: 1002 / 960, ok: 5,
+  intro: "Ο τυφλοπόντικας βγαίνει από τις τρύπες! Κάνε του κλικ πριν κρυφτεί. Μπουπ!",
+  start(api) {
+    const GOAL = 12, HOLES = [[18, 70], [50, 70], [82, 70], [18, 86.5], [50, 86.5], [82, 86.5]];
+    let hits = 0, cool = .8;
+    api.progress(0, GOAL);
+    api.on(api.stage, "pointerdown", () => api.miss());
+    const holes = HOLES.map(([x, y], k) => {
+      const m = api.el("div", "mask"); m.style.left = (x - 13) + "%"; m.style.width = "26%"; m.style.top = (y - 16) + "%"; m.style.height = "18%"; m.style.zIndex = k < 3 ? 2 : 3;
+      const im = new Image(); im.src = A("mole.png"); im.alt = ""; im.draggable = false; m.appendChild(im);
+      const h = { m, im, up: false, x, y, tid: 0 };
+      im.addEventListener("pointerdown", e => {
+        e.stopPropagation(); if (!h.up || h.hit || !api.alive()) return;
+        h.hit = true; m.classList.add("hit"); Snd.bonk(); hits++; api.progress(hits, GOAL);
+        api.fx(x, y - 14, pick(["💫", "⭐", "✨"]));
+        clearTimeout(h.tid); h.tid = setTimeout(() => down(h), 350);
+        if (hits >= GOAL) api.after(400, api.win);
+      });
+      return h;
+    });
+    function down(h) { h.up = false; h.hit = false; h.m.classList.remove("up", "hit"); }
+    api.loop(dt => {
+      if ((cool -= dt) > 0) return;
+      const upN = holes.filter(h => h.up).length, want = hits < 5 ? 1 : 2;
+      if (upN >= want) return;
+      const free = holes.filter(h => !h.up); if (!free.length) return;
+      const h = pick(free); h.up = true; h.m.classList.add("up");
+      const stay = 2600 - 1100 * hits / GOAL;
+      h.tid = setTimeout(() => { if (!h.hit) down(h); }, stay);
+      cool = rnd(.4, 1.0);
+    });
+  } },
+/* 5 ---------------------------------------------------------------- */
+{ title: "Τάισε τα ζωάκια", icon: "bunny.png", skill: "Σύρσιμο", bg: "bg_farm.jpg", ar: 1002 / 960, ok: 3,
+  intro: "Τα ζωάκια πεινάνε! Πάτα πάνω σε ένα φαγητό, κράτα το κουμπί πατημένο και σύρε το στο σωστό ζωάκι.",
+  start(api) {
+    const EAT = [{ id: "bunny", img: "bunny.png", x: 18 }, { id: "dog", img: "dog.png", x: 50 }, { id: "cat", img: "cat.png", x: 82 }];
+    const ROUNDS = [[["🥕", "bunny"], ["🦴", "dog"], ["🐟", "cat"]], [["🥬", "bunny"], ["🍖", "dog"], ["🥛", "cat"]]];
+    let fed = 0, round = 0, left = 0; const total = 6;
+    api.progress(0, total);
+    api.el("div", "tray");
+    const eaters = EAT.map(a => { const el = api.sprite(a.img, "eater bottom"); api.put(el, a.x, 95); return { el, id: a.id }; });
+    function setup() {
+      const R = shuffle(ROUNDS[round]); left = R.length;
+      R.forEach(([emo, who], k) => {
+        const f = api.el("div", "food"); f.textContent = emo;
+        api.drag(f, [32 + k * 18, 16], {
+          targets: () => eaters,
+          drop(t) {
+            if (t.id === who) {
+              f.dataset.done = 1; const c = api.center(t.el); api.put(f, c.x, c.y - 5); f.classList.add("gone");
+              t.el.classList.remove("yum"); void t.el.offsetWidth; t.el.classList.add("yum");
+              Snd.good(); api.fx(c.x, c.y - 22, pick(["😋", "❤️", "💛"])); fed++; api.progress(fed, total);
+              api.hint("Νιαμ νιαμ! " + pick(PRAISE), false, 1400);
+              if (--left === 0) api.after(900, () => { if (++round >= ROUNDS.length) api.win(); else setup(); });
+              return true;
+            }
+            api.miss(); Snd.boop(); t.el.classList.remove("nope"); void t.el.offsetWidth; t.el.classList.add("nope");
+            api.hint("Όχι αυτό! Δοκίμασε άλλο ζωάκι 🙂");
+            return false;
+          }
+        });
+      });
+    }
+    setup();
+  } },
+/* 6 ---------------------------------------------------------------- */
+{ title: "Μάζεψε το δωμάτιο", icon: "teddy.png", skill: "Σύρσιμο και ταξινόμηση", bg: "bg_room.jpg", ar: 1002 / 960, ok: 3,
+  intro: "Τι ακαταστασία! Σύρε τα παιχνίδια στο κουτί, τα ρούχα στην ντουλάπα και το βιβλίο στο ράφι.",
+  start(api) {
+    const ZONES = [
+      { id: "toys", l: 2, t: 66, w: 40, h: 32, lbl: "🧸 Παιχνίδια" },
+      { id: "clothes", l: 39, t: 14, w: 32, h: 52, lbl: "👕 Ρούχα" },
+      { id: "books", l: 74, t: 14, w: 25, h: 55, lbl: "📚 Βιβλία" }
+    ];
+    const ITEMS = [["teddy", "toys"], ["ball", "toys"], ["fishball", "toys"], ["tshirt", "clothes"], ["sock", "clothes"], ["sock2", "clothes"], ["book", "books"]];
+    const SLOTS = [[51, 79], [63, 79], [75, 79], [88, 80], [56, 92], [69, 92], [82, 92]];
+    let done = 0;
+    api.progress(0, ITEMS.length);
+    const zones = ZONES.map(z => {
+      const el = api.el("div", "zone"); Object.assign(el.style, { left: z.l + "%", top: z.t + "%", width: z.w + "%", height: z.h + "%" });
+      el.innerHTML = `<span class="lbl">${z.lbl}</span><span class="cnt"></span>`; return { el, id: z.id, n: 0 };
+    });
+    shuffle(ITEMS).forEach(([name, kind], k) => {
+      const it = api.sprite(name + ".png", "item");
+      api.drag(it, SLOTS[k], {
+        targets: () => zones,
+        drop(z) {
+          if (z.id === kind) {
+            it.dataset.done = 1; const c = api.center(z.el); api.put(it, c.x, c.y); it.classList.add("gone");
+            z.n++; z.el.querySelector(".cnt").textContent = "✅".repeat(z.n);
+            Snd.good(); done++; api.progress(done, ITEMS.length);
+            if (done === ITEMS.length) api.after(700, api.win);
+            return true;
+          }
+          api.miss(); Snd.boop(); z.el.classList.remove("nope"); void z.el.offsetWidth; z.el.classList.add("nope");
+          api.hint("Αυτό πάει αλλού! 🤔"); return false;
+        }
+      });
+    });
+  } },
+/* 7 ---------------------------------------------------------------- */
+{ title: "Άνοιξε τα δώρα", icon: "gift.png", skill: "Διπλό κλικ", bg: "bg_party.jpg", ar: 999 / 960, ok: 6,
+  intro: "Κάνε διπλό κλικ σε κάθε δώρο: πάτα δύο φορές γρήγορα, κλικ-κλικ! Τι κρύβει μέσα;",
+  start(api) {
+    const PRIZES = ["star.png", "teddy.png", "ball.png", "butterfly.png", "bear_awake.png", "cat_awake.png", "dog.png", "bunny.png", "mole.png", "fishball.png"];
+    const POS = []; [52, 86].forEach(y => [17, 39, 61, 83].forEach(x => POS.push([x, y])));
+    let opened = 0, singles = 0; const prizes = shuffle(PRIZES);
+    api.progress(0, POS.length);
+    api.on(api.stage, "pointerdown", () => api.miss());
+    POS.forEach(([x, y], k) => {
+      const g = api.sprite("gift.png", "gift bottom"); api.put(g, x, y);
+      let last = 0, oneT;
+      const open = () => {
+        if (g.dataset.open || !api.alive()) return; g.dataset.open = 1;
+        g.querySelector(".one")?.remove();
+        g.querySelector("img").src = A("gift_open.png");
+        const p = new Image(); p.src = A(prizes[k % prizes.length]); p.className = "prize"; p.alt = ""; g.appendChild(p);
+        Snd.good(); opened++; api.progress(opened, POS.length);
+        api.fx(x, y - 30, "🎉");
+        if (opened === POS.length) api.after(900, api.win);
+      };
+      g.addEventListener("pointerdown", e => {
+        e.stopPropagation(); if (g.dataset.open) return;
+        const now = performance.now();
+        if (now - last < 750) { clearTimeout(oneT); open(); return; }
+        last = now; Snd.tick();
+        g.classList.remove("tap"); void g.offsetWidth; g.classList.add("tap");
+        g.querySelector(".one")?.remove(); const one = api.el("div", "one", g); one.textContent = "1";
+        oneT = setTimeout(() => { one.remove(); if (g.dataset.open) return; singles++; if (singles % 3 === 1) api.hint("Δύο κλικ γρήγορα: κλικ-κλικ! 👆👆"); }, 800);
+      });
+      g.addEventListener("dblclick", open);
+    });
+  } },
+/* 8 ---------------------------------------------------------------- */
+{ title: "Ένωσε τις τελείες", icon: "star.png", skill: "Πάτημα και κράτημα", bg: "bg_sky.jpg", ar: 10 / 7, cover: true, ok: 5,
+  intro: "Πάτα στην κίτρινη τελεία με το 1 και κράτα το κουμπί πατημένο. Πήγαινε στο 2, μετά στο 3… Τι σχέδιο θα βγει;",
+  start(api) {
+    const star = []; for (let k = 0; k < 10; k++) { const a = (-90 + 36 * k) * Math.PI / 180, r = k % 2 ? 118 : 275; star.push([500 + r * Math.cos(a), 385 + r * Math.sin(a)]); }
+    const SHAPES = [
+      { name: "Σπιτάκι! 🏠", col: "#ff8a5b", pts: [[300, 580], [700, 580], [700, 350], [500, 170], [300, 350]] },
+      { name: "Ψαράκι! 🐟", col: "#4d96ff", pts: [[180, 370], [330, 240], [540, 215], [700, 330], [850, 220], [850, 520], [700, 410], [540, 525], [330, 500]] },
+      { name: "Αστεράκι! ⭐", col: "#ffd23f", pts: star }
+    ];
+    const NS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(NS, "svg"); svg.setAttribute("viewBox", "0 0 1000 700"); svg.setAttribute("class", "svgfull"); api.stage.appendChild(svg);
+    const mk = (tag, attrs, parent = svg) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; };
+    let si = 0, S, nextI, drawing = false, dots, lines, rubber, fill, done = false;
+    api.progress(0, SHAPES.length);
+    const toSvg = e => { const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; return p.matrixTransform(svg.getScreenCTM().inverse()); };
+    function setup() {
+      svg.innerHTML = ""; S = SHAPES[si]; nextI = 1; done = false;
+      mk("rect", { x: 30, y: 25, width: 940, height: 650, rx: 40, fill: "#fffdf6", "fill-opacity": .94, stroke: "#35285a", "stroke-width": 5 });
+      const poly = S.pts.map(p => p.join(",")).join(" ");
+      fill = mk("polygon", { points: poly, fill: S.col, "fill-opacity": 0, style: "transition:fill-opacity .6s" });
+      mk("polygon", { points: poly, fill: "none", stroke: "#d8cfe8", "stroke-width": 7, "stroke-dasharray": "4 18", "stroke-linecap": "round" });
+      lines = mk("g", {}); rubber = mk("line", { stroke: "#ff5d8f", "stroke-width": 10, "stroke-linecap": "round", visibility: "hidden" });
+      dots = S.pts.map((p, k) => { const g = mk("g", { class: "dot" + (k === 0 ? " next" : "") }); mk("circle", { cx: p[0], cy: p[1], r: 30 }, g); mk("text", { x: p[0], y: p[1] + 1 }, g).textContent = k + 1; return g; });
+      nextI = 0;
+    }
+    function connect(to) {
+      const n = S.pts.length, from = (to - 1 + n) % n;
+      mk("line", { x1: S.pts[from][0], y1: S.pts[from][1], x2: S.pts[to][0], y2: S.pts[to][1], stroke: "#35285a", "stroke-width": 10, "stroke-linecap": "round" }, lines);
+    }
+    let reached = -1; /* index of last dot we are holding from */
+    setup();
+    api.on(svg, "pointerdown", e => {
+      if (done || !api.alive()) return; const p = toSvg(e);
+      const from = reached < 0 ? 0 : reached, q = S.pts[from];
+      if (Math.hypot(p.x - q[0], p.y - q[1]) < 58) {
+        drawing = true; try { svg.setPointerCapture(e.pointerId); } catch (_) {}
+        if (reached >= 0 && reached !== nextI) dots[reached].classList.remove("next");
+        if (reached < 0) { reached = 0; dots[0].classList.remove("next"); dots[0].classList.add("done"); Snd.note(0); setNext(1); }
+        rubberTo(p);
+      } else api.hint(reached < 0 ? "Ξεκίνα από την κίτρινη τελεία με το 1!" : `Πάτα στην τελεία ${reached + 1} και συνέχισε!`);
+    });
+    function setNext(k) { dots.forEach(d => d.classList.remove("next")); nextI = k % S.pts.length; dots[nextI].classList.add("next"); }
+    function rubberTo(p) { const q = S.pts[reached]; rubber.setAttribute("x1", q[0]); rubber.setAttribute("y1", q[1]); rubber.setAttribute("x2", p.x); rubber.setAttribute("y2", p.y); rubber.setAttribute("visibility", "visible"); }
+    api.on(svg, "pointermove", e => {
+      if (!drawing) return; const p = toSvg(e); rubberTo(p);
+      const q = S.pts[nextI];
+      if (Math.hypot(p.x - q[0], p.y - q[1]) < 48) {
+        connect(nextI); Snd.note(Math.min(14, (nextI || S.pts.length) * 1.5));
+        dots[nextI].classList.remove("next"); dots[nextI].classList.add("done");
+        if (nextI === 0) { finishShape(); return; }
+        reached = nextI; setNext(nextI + 1); rubberTo(p);
+      }
+    });
+    const up = () => {
+      if (!drawing) return; drawing = false; rubber.setAttribute("visibility", "hidden");
+      if (!done) { api.miss(); api.hint(`Κράτα το κουμπί πατημένο! Ξεκίνα πάλι από το ${reached + 1}.`); dots[reached].classList.add("next"); }
+    };
+    api.on(svg, "pointerup", up); api.on(svg, "pointercancel", up);
+    function finishShape() {
+      done = true; drawing = false; rubber.setAttribute("visibility", "hidden"); dots.forEach(d => d.classList.remove("next"));
+      fill.setAttribute("fill-opacity", .85); Snd.good(); si++; api.progress(si, SHAPES.length);
+      const t = mk("text", { x: 500, y: 655, "text-anchor": "middle", style: "font:800 52px var(--font);fill:#35285a" }); t.textContent = S.name;
+      api.say(S.name);
+      api.after(1800, () => { if (si >= SHAPES.length) api.win(); else { reached = -1; setup(); } });
+    }
+  } },
+/* 9 ---------------------------------------------------------------- */
+{ title: "Ο λαβύρινθος του τυριού", icon: "cheese.png", skill: "Ακρίβεια", bg: "bg_meadow.jpg", ar: 10 / 7, cover: true, ok: 4,
+  intro: "Ο Ποντικούλης πεινάει! Βάλε το βελάκι πάνω του και οδήγησέ τον στο τυρί. Μείνε μέσα στο μονοπάτι!",
+  start(api) {
+    const MAZES = [
+      { w: 120, pts: [[110, 560], [430, 560], [430, 210], [880, 210]] },
+      { w: 100, pts: [[100, 125], [520, 125], [520, 370], [170, 370], [170, 590], [880, 590], [880, 290]] },
+      { w: 86, pts: [[90, 595], [90, 115], [320, 115], [320, 595], [560, 595], [560, 115], [800, 115], [800, 595], [925, 595]] }
+    ];
+    const NS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(NS, "svg"); svg.setAttribute("viewBox", "0 0 1000 700"); svg.setAttribute("class", "svgfull"); api.stage.appendChild(svg);
+    const mk = (tag, attrs, parent = svg) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; };
+    let mi = 0, M, m, state, mouseG, glow, cheese, bumpT = 0;
+    api.progress(0, MAZES.length);
+    const segD = (p, a, b) => { const dx = b[0] - a[0], dy = b[1] - a[1], l = dx * dx + dy * dy; let t = l ? ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / l : 0; t = Math.max(0, Math.min(1, t)); return Math.hypot(p[0] - a[0] - t * dx, p[1] - a[1] - t * dy); };
+    const onPath = p => { for (let k = 0; k < M.pts.length - 1; k++) if (segD(p, M.pts[k], M.pts[k + 1]) <= M.w / 2 - 6) return true; return false; };
+    const toSvg = e => { const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; const r = p.matrixTransform(svg.getScreenCTM().inverse()); return [r.x, r.y]; };
+    function setup() {
+      svg.innerHTML = ""; M = MAZES[mi]; m = M.pts[0].slice(); state = "wait";
+      const pts = M.pts.map(p => p.join(",")).join(" ");
+      mk("polyline", { points: pts, fill: "none", stroke: "#7a5230", "stroke-width": M.w + 16, "stroke-linejoin": "round", "stroke-linecap": "round" });
+      mk("polyline", { points: pts, fill: "none", stroke: "#f6e2b3", "stroke-width": M.w, "stroke-linejoin": "round", "stroke-linecap": "round" });
+      mk("polyline", { points: pts, fill: "none", stroke: "#e2c07f", "stroke-width": 6, "stroke-dasharray": "2 22", "stroke-linecap": "round" });
+      const end = M.pts[M.pts.length - 1], cw = M.w * 1.05;
+      cheese = mk("image", { href: A("cheese.png"), x: end[0] - cw / 2, y: end[1] - cw * .4, width: cw, height: cw * .8 });
+      mouseG = mk("g", {});
+      glow = mk("circle", { r: M.w * .62, fill: "rgba(255,210,63,.35)", stroke: "#ffc93c", "stroke-width": 6, "stroke-dasharray": "14 10" }, mouseG);
+      const mw = M.w * .85, mh = mw * 1.24;
+      mk("image", { href: A("mascot.png"), x: -mw / 2, y: -mh / 2 - 8, width: mw, height: mh }, mouseG);
+      place();
+    }
+    function place() { mouseG.setAttribute("transform", `translate(${m[0]},${m[1]})`); glow.setAttribute("visibility", state === "carry" ? "hidden" : "visible"); }
+    setup();
+    api.on(svg, "pointermove", e => move(toSvg(e)));
+    api.on(svg, "pointerdown", e => move(toSvg(e)));
+    api.on(svg, "pointerleave", () => { if (state === "carry") { state = "wait"; place(); } });
+    function move(p) {
+      if (!api.alive() || state === "won") return;
+      if (state !== "carry") {
+        if (Math.hypot(p[0] - m[0], p[1] - m[1]) < M.w * .6) { state = "carry"; Snd.tick(); place(); }
+        return;
+      }
+      const d = Math.hypot(p[0] - m[0], p[1] - m[1]), steps = Math.max(1, Math.ceil(d / 4));
+      let last = m.slice(), ok = true;
+      for (let s = 1; s <= steps; s++) {
+        const q = [m[0] + (p[0] - m[0]) * s / steps, m[1] + (p[1] - m[1]) * s / steps];
+        if (!onPath(q)) { ok = false; break; } last = q;
+      }
+      m = last;
+      if (!ok) {
+        state = "lost"; Snd.boop(); api.miss();
+        const now = performance.now(); if (now - bumpT > 2500) { bumpT = now; api.hint("Ωχ, ο φράχτης! Γύρνα στον Ποντικούλη 🐭"); }
+      }
+      place();
+      const end = M.pts[M.pts.length - 1];
+      if (Math.hypot(m[0] - end[0], m[1] - end[1]) < M.w * .45) {
+        state = "won"; place(); glow.setAttribute("visibility", "hidden"); Snd.good();
+        cheese.setAttribute("class", "eat"); api.hint("Νιαμ! Τι νόστιμο τυράκι! 🧀", true, 1600);
+        mi++; api.progress(mi, MAZES.length);
+        api.after(1600, () => { if (mi >= MAZES.length) api.win(); else setup(); });
+      }
+    }
+  } },
+/* 10 --------------------------------------------------------------- */
+{ title: "Βάψε τη ζωγραφιά", icon: "🎨", skill: "Όλα μαζί", bg: "bg_party.jpg", ar: 10 / 7, cover: true, ok: 99,
+  intro: "Διάλεξε ένα χρώμα από δεξιά με κλικ και μετά κάνε κλικ μέσα σε ένα κομμάτι της ζωγραφιάς για να το βάψεις.",
+  start(api) {
+    const COLS = ["#ff5a5f", "#ff9f1c", "#ffd93d", "#6bcb77", "#2e8b57", "#9ad0ff", "#4d96ff", "#9b5de5", "#ff8fc7", "#a0632d"];
+    const petals = (cx, cy) => [0, 72, 144, 216, 288].map(a => `<circle cx="${cx + 30 * Math.cos(a * Math.PI / 180 - Math.PI / 2)}" cy="${cy + 30 * Math.sin(a * Math.PI / 180 - Math.PI / 2)}" r="22"/>`).join("");
+    const rays = [...Array(8)].map((_, k) => { const a = k * Math.PI / 4; return `<line x1="${650 + 80 * Math.cos(a)}" y1="${120 + 80 * Math.sin(a)}" x2="${650 + 108 * Math.cos(a)}" y2="${120 + 108 * Math.sin(a)}" stroke="#35285a" stroke-width="7" stroke-linecap="round"/>`; }).join("");
+    const pic = `
+      <defs><clipPath id="frameClip"><rect x="20" y="20" width="760" height="660" rx="30"/></clipPath></defs>
+      <rect x="20" y="20" width="760" height="660" rx="30" fill="#fff"/>
+      <g clip-path="url(#frameClip)">
+        <rect class="reg" x="0" y="0" width="800" height="470"/>
+        ${rays}
+        <circle class="reg" cx="650" cy="120" r="64"/>
+        <path class="reg" d="M150,185 q-45,0 -45,-38 q0,-40 45,-40 q12,-45 65,-45 q50,0 62,42 q45,-2 45,40 q0,41 -44,41 z"/>
+        <path class="reg" d="M0,470 Q200,415 400,455 T800,440 L800,700 L0,700 Z"/>
+        <rect class="reg" x="140" y="335" width="240" height="220"/>
+        <polygon class="reg" points="112,342 260,212 408,342"/>
+        <rect class="reg" x="231" y="445" width="60" height="110" rx="8"/>
+        <rect class="reg" x="165" y="370" width="52" height="52" rx="6"/>
+        <rect class="reg" x="305" y="370" width="52" height="52" rx="6"/>
+        <polygon class="reg" points="236,555 286,555 330,700 192,700"/>
+        <rect class="reg" x="560" y="385" width="44" height="170" rx="6"/>
+        <circle class="reg" cx="582" cy="330" r="95"/>
+        <line x1="470" y1="610" x2="470" y2="690" stroke="#35285a" stroke-width="7"/>
+        <g class="reg">${petals(470, 600)}</g><circle class="reg" cx="470" cy="600" r="18"/>
+        <line x1="700" y1="615" x2="700" y2="690" stroke="#35285a" stroke-width="7"/>
+        <g class="reg">${petals(700, 605)}</g><circle class="reg" cx="700" cy="605" r="18"/>
+      </g>
+      <rect x="20" y="20" width="760" height="660" rx="30" fill="none" stroke="#35285a" stroke-width="6"/>
+      ${COLS.map((c, k) => `<circle class="sw" data-k="${k}" cx="${850 + (k % 2) * 90}" cy="${95 + Math.floor(k / 2) * 128}" r="42" fill="${c}"/>`).join("")}`;
+    const NS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(NS, "svg"); svg.setAttribute("viewBox", "0 0 1000 700"); svg.setAttribute("class", "svgfull"); svg.innerHTML = pic; api.stage.appendChild(svg);
+    const regs = [...svg.querySelectorAll(".reg")]; regs.forEach(r => r.setAttribute("fill", "#ffffff"));
+    let col = null, painted = new Set(), doneBtn;
+    const sws = [...svg.querySelectorAll(".sw")];
+    api.progress(0, regs.length);
+    sws.forEach(s => s.addEventListener("pointerdown", () => { col = COLS[+s.dataset.k]; sws.forEach(z => z.classList.toggle("sel", z === s)); Snd.tick(); }));
+    regs.forEach(r => r.addEventListener("pointerdown", e => {
+      e.stopPropagation(); if (!api.alive()) return;
+      if (!col) { api.hint("Πρώτα διάλεξε χρώμα από δεξιά! 👉"); return; }
+      r.setAttribute("fill", col); if (r.tagName === "g") r.querySelectorAll("circle").forEach(c => c.setAttribute("fill", col));
+      Snd.pop(); painted.add(r); api.progress(painted.size, regs.length);
+      if (painted.size === regs.length) api.after(500, api.win);
+      else if (!doneBtn && painted.size >= regs.length * .75) {
+        doneBtn = api.el("button", "btn green donebtn"); doneBtn.textContent = "Τελείωσα ✓"; doneBtn.onclick = () => api.win();
+      }
+    }));
+  } }
+];
+
+/* ---------- diploma ---------- */
+function showDiploma() {
+  exitGame(); show("diploma");
+  $("#diploma").style.backgroundImage = `url("${A("bg_meadow.jpg")}")`;
+  $("#dipName").textContent = Store.d.name || "τον μικρό μας φίλο";
+  $("#dipStars").textContent = `⭐ ${totalStars()} αστέρια από 30 · ${new Date().toLocaleDateString("el-GR", { day: "numeric", month: "long", year: "numeric" })}`;
+  Snd.win(); confetti(); Voice.say("Συγχαρητήρια " + (Store.d.name || "") + "! Πήρες το δίπλωμα ποντικιού!");
+}
+
+/* ---------- settings ---------- */
+function openSettings() {
+  const wrap = $("#mapWrap"); wrap.querySelectorAll(".ovl").forEach(e => e.remove());
+  const o = document.createElement("div"); o.className = "ovl";
+  o.innerHTML = `<div class="card" style="flex-direction:column;align-items:stretch;max-width:520px">
+    <h3>Ρυθμίσεις</h3>
+    <div class="setlist">
+      <label class="setrow"><input type="checkbox" id="sSound"> Ήχοι</label>
+      <label class="setrow"><input type="checkbox" id="sVoice" ${Voice.can() ? "" : "disabled"}> Φωνή που διαβάζει τις οδηγίες ${Voice.can() ? "" : "<small>(δεν βρέθηκε ελληνική φωνή σε αυτόν τον υπολογιστή)</small>"}</label>
+      <label class="setrow"><input type="checkbox" id="sCur"> Μεγάλο κίτρινο βελάκι</label>
+      <label class="setrow"><input type="checkbox" id="sAll"> Όλα τα παιχνίδια ανοιχτά (για τον δάσκαλο)</label>
+      <div class="row"><button class="btn white" id="sName">✏️ Αλλαγή ονόματος</button><button class="btn white" id="sReset">🗑️ Διαγραφή προόδου</button></div>
+      <div class="row"><button class="btn green" id="sClose">Εντάξει</button></div>
+    </div></div>`;
+  wrap.appendChild(o);
+  const bind = (id, key, after) => { const c = o.querySelector(id); c.checked = !!Store.d[key]; c.onchange = () => { Store.d[key] = c.checked; Store.save(); after && after(); }; };
+  bind("#sSound", "sound"); bind("#sVoice", "voice"); bind("#sCur", "bigCursor", applyCursor); bind("#sAll", "unlockAll");
+  o.querySelector("#sName").onclick = () => { o.remove(); show("start"); $("#nameIn").focus(); };
+  const rb = o.querySelector("#sReset");
+  rb.onclick = () => {
+    if (!rb.dataset.sure) { rb.dataset.sure = 1; rb.textContent = "Σίγουρα; Πάτα ξανά"; rb.style.background = "var(--berry)"; rb.style.color = "var(--white)"; return; }
+    Store.d.stars = {}; Store.save(); o.remove(); showMap();
+  };
+  o.querySelector("#sClose").onclick = () => { o.remove(); showMap(); };
+}
+function applyCursor() { $("#app").classList.toggle("bigcur", !!Store.d.bigCursor); }
+
+/* ---------- boot ---------- */
+Store.load(); Voice.init(); applyCursor();
+document.querySelectorAll("img[data-src]").forEach(i => { i.src = A(i.dataset.src); i.draggable = false; });
+$("#start").style.backgroundImage = `url("${A("bg_meadow.jpg")}")`;
+$("#nameIn").value = Store.d.name || "";
+$("#startForm").addEventListener("submit", e => {
+  e.preventDefault(); Snd.c(); Snd.good();
+  Store.d.name = $("#nameIn").value.trim().slice(0, 18); Store.save(); showMap();
+});
+$("#setBtn").onclick = openSettings;
+$("#homeBtn").onclick = showMap;
+$("#sayBtn").onclick = () => { if (!cur) return; if (Voice.can() && Store.d.voice) Voice.say(cur.g.intro); else { const st = $("#stage"); const h = document.createElement("div"); h.className = "hint"; h.style.whiteSpace = "normal"; h.style.width = "80%"; h.style.fontSize = "calc(var(--u)*2.2)"; h.textContent = cur.g.intro; st.appendChild(h); setTimeout(() => h.remove(), 6000); } };
+$("#dipBack").onclick = showMap;
+let inFrame = false; try { inFrame = window.self !== window.top; } catch (e) { inFrame = true; }
+if (inFrame) $("#dipPrint").hidden = true; else $("#dipPrint").onclick = () => window.print();
+document.addEventListener("dragstart", e => e.preventDefault());
+window.addEventListener("resize", () => {
+  if (!$("#mapScreen").hidden) { const m = $("#map"); fit(m, $("#mapWrap"), MAP_AR); }
+  if (!$("#gameScreen").hidden && cur) fit($("#stage"), $("#stageWrap"), cur.g.ar);
+});
+</script>
