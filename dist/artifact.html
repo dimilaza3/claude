@@ -178,6 +178,55 @@ button{font-family:inherit;color:inherit}
 .skills{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:12px 0 4px}
 .skills span{font-size:.95rem;font-weight:800;background:var(--white);border:2px solid var(--ink);border-radius:999px;padding:.15em .6em}
 
+/* world 2 */
+.tabs{display:flex;gap:6px;flex:none}
+.tab{font-weight:800;font-size:1.05rem;padding:.3em .8em;border-radius:999px;border:3px solid var(--ink);background:var(--white);cursor:pointer;white-space:nowrap}
+.tab.on{background:var(--berry);color:var(--white)}
+.tab.locked{background:var(--lock);color:#6f6890}
+.map-bg{position:absolute;inset:0;border-radius:18px;background:center/100% 100% no-repeat}
+.map.dusk .map-bg{transform:scaleX(-1);filter:saturate(1.15) hue-rotate(-12deg)}
+.map.dusk .map-bg::after{content:"";position:absolute;inset:0;border-radius:18px;background:linear-gradient(180deg,rgba(255,120,80,.32),rgba(110,70,180,.30));mix-blend-mode:multiply;pointer-events:none}
+.dip.gold{background:linear-gradient(160deg,#fff6d6,#ffe9a8);border-color:#d99a00}
+.dip.gold h1{color:#c47f00}
+.bf2{width:calc(var(--u)*10);z-index:3;cursor:pointer}
+.bf2 > img{animation:flap .28s ease-in-out infinite alternate}
+.bf2.caught{animation:popb .35s forwards;pointer-events:none}
+.bubble.nope{animation:shake .4s}
+.badgebox{position:absolute;left:2%;top:3%;z-index:30;background:var(--paper);border:3px solid var(--ink);border-radius:18px;padding:.25em .8em;font-weight:800;font-size:calc(var(--u)*2.6);display:flex;align-items:center;gap:.4em;box-shadow:0 4px 0 var(--ink);pointer-events:none;white-space:nowrap}
+.badgebox img{height:calc(var(--u)*6)}
+.badgebox ~ .hint{top:auto;bottom:4%}
+.dark{position:absolute;inset:0;z-index:5;pointer-events:none;background:radial-gradient(circle calc(var(--u)*12) at var(--mx,50%) var(--my,50%),rgba(8,10,35,0) 0 55%,rgba(8,10,35,.95) 100%)}
+.hide{z-index:3;cursor:pointer}
+.hide.found{z-index:7;filter:drop-shadow(0 0 8px #fff) drop-shadow(0 0 4px var(--sun))}
+.hide.found > img{animation:jump .6s ease-out}
+.findlist{position:absolute;left:50%;bottom:2%;transform:translateX(-50%);z-index:8;display:flex;gap:calc(var(--u)*1);background:var(--paper);border:3px solid var(--ink);border-radius:18px;padding:calc(var(--u)*.6) calc(var(--u)*1.2);pointer-events:none}
+.findlist img{height:calc(var(--u)*5);width:auto;filter:grayscale(1) brightness(.35) opacity(.6)}
+.findlist img.on{filter:none}
+.mask img.bun{width:58%}
+.scroller{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;touch-action:pan-y}
+.tall{position:relative;height:420%;background:linear-gradient(to top,#6cc55a 0 3%,#bfeaff 3%,#8fd3ff 35%,#5b7fdc 70%,#1e2160 100%)}
+.trunk{position:absolute;left:50%;top:6%;bottom:0;width:calc(var(--u)*5);transform:translateX(-50%);background:linear-gradient(90deg,#7a4c22,#a8733f 45%,#7a4c22);border:3px solid var(--ink);border-bottom:none;border-radius:24px 24px 0 0}
+.branch{position:absolute;height:calc(var(--u)*1.8);background:#8a5a2b;border:3px solid var(--ink);border-radius:999px;transform:translateY(-50%);box-sizing:border-box}
+.titem{cursor:pointer;z-index:2;filter:drop-shadow(0 4px 0 rgba(0,0,0,.15))}
+.titem.found{filter:drop-shadow(0 0 10px #fff) drop-shadow(0 0 6px var(--sun))}
+.titem.found > img{animation:jump .6s ease-out}
+.deco{position:absolute;transform:translate(-50%,-50%);font-size:calc(var(--u)*6);pointer-events:none}
+.sarrow{position:absolute;left:50%;transform:translateX(-50%);font-size:calc(var(--u)*6);z-index:30;pointer-events:none;animation:hop 1s ease-in-out infinite}
+.sarrow.up{top:2%}.sarrow.down{bottom:2%}
+.board{position:absolute;border:4px solid var(--ink);border-radius:8px;background:var(--white);box-sizing:border-box;box-shadow:0 6px 0 rgba(53,40,90,.3)}
+.board .guide{position:absolute;inset:0;background:center/100% 100% no-repeat}
+.slot{position:absolute;border:2px dashed rgba(53,40,90,.4);box-sizing:border-box}
+.slot.over{background:rgba(255,201,60,.4)}
+.piece{position:absolute;transform:translate(-50%,-50%);background-repeat:no-repeat;outline:3px solid var(--white);box-shadow:0 4px 10px rgba(0,0,0,.35);z-index:10;border-radius:4px}
+.piece.placed{outline:none;box-shadow:none;border-radius:0;z-index:5}
+.oslot{position:absolute;transform:translate(-50%,-50%);width:calc(var(--u)*18);height:calc(var(--u)*20);border:calc(var(--u)*.45) dashed var(--white);border-radius:20px;background:rgba(255,255,255,.3);box-sizing:border-box}
+.oslot.over{background:rgba(255,230,120,.55);border-style:solid;border-color:var(--sun)}
+.sizelbl{position:absolute;left:11%;right:11%;top:84%;display:flex;justify-content:space-between;font-weight:800;font-size:calc(var(--u)*2.6);pointer-events:none}
+.sizelbl span{background:var(--paper);border:3px solid var(--ink);border-radius:999px;padding:.1em .7em}
+.sitem{z-index:10}
+.num{position:absolute;left:50%;top:0;transform:translate(-50%,-50%);width:calc(var(--u)*6);height:calc(var(--u)*6);border-radius:50%;background:var(--white);border:calc(var(--u)*.4) solid var(--ink);display:grid;place-items:center;font-weight:800;font-size:calc(var(--u)*3.4);z-index:2;box-sizing:border-box}
+.num.ok{background:var(--leaf);color:var(--white)}
+@media (max-width:620px){.tab .long{display:none}}
 @keyframes pulse{0%,100%{box-shadow:0 calc(var(--u)*.4) 0 var(--ink),0 0 0 0 rgba(255,201,60,.9)}50%{box-shadow:0 calc(var(--u)*.4) 0 var(--ink),0 0 0 calc(var(--u)*1.4) rgba(255,201,60,0)}}
 @keyframes hop{0%,100%{translate:0 0}50%{translate:0 -10%}}
 @keyframes wave{0%,100%{rotate:-3deg}50%{rotate:3deg}}
@@ -218,6 +267,7 @@ button{font-family:inherit;color:inherit}
   <section class="screen" id="mapScreen" hidden>
     <div class="topbar">
       <div class="who" id="who"></div>
+      <div class="tabs" id="tabs"></div>
       <div class="pill" id="starTotal"></div>
       <button class="ibtn" id="setBtn" title="Ρυθμίσεις" aria-label="Ρυθμίσεις">⚙️</button>
     </div>
@@ -235,14 +285,14 @@ button{font-family:inherit;color:inherit}
   </section>
 
   <section class="screen" id="diploma" hidden>
-    <div class="dip">
+    <div class="dip" id="dipCard">
       <img class="corner c1" data-src="star.png" alt=""><img class="corner c2" data-src="star.png" alt="">
       <img class="corner c3" data-src="star.png" alt=""><img class="corner c4" data-src="star.png" alt="">
-      <h1>ΔΙΠΛΩΜΑ ΠΟΝΤΙΚΙΟΥ</h1>
+      <h1 id="dipTitle">ΔΙΠΛΩΜΑ ΠΟΝΤΙΚΙΟΥ</h1>
       <p>Το δίπλωμα αυτό απονέμεται στον/στην</p>
       <div class="nm" id="dipName"></div>
-      <p>γιατί τα κατάφερε και στα 10 παιχνίδια στον Κόσμο του Ποντικούλη!</p>
-      <div class="skills"><span>κίνηση</span><span>κλικ</span><span>διπλό κλικ</span><span>σύρσιμο</span><span>κράτημα</span><span>ακρίβεια</span></div>
+      <p id="dipText"></p>
+      <div class="skills" id="dipSkills"></div>
       <p id="dipStars"></p>
       <img class="mas" data-src="mascot_happy.png" alt="">
     </div>
@@ -331,10 +381,18 @@ function fit(box, wrap, ar) {
 function show(id) { ["start", "mapScreen", "gameScreen", "diploma"].forEach(s => $("#" + s).hidden = s !== id); }
 const MAP_AR = 1353 / 909;
 const SPOTS = [[65.4, 86.4], [52.5, 82.0], [40.3, 77.6], [23.5, 72.6], [14.4, 60.0], [16.9, 41.6], [30.8, 28.6], [45.1, 27.5], [59.1, 34.7], [73.2, 38.5]];
+const WORLDS = [{ name: "Κόσμος 1", icon: "🌞" }, { name: "Κόσμος 2", icon: "🌙" }];
 const starsOf = i => Store.d.stars[i + 1] || 0;
-const unlocked = i => Store.d.unlockAll || i === 0 || starsOf(i - 1) > 0;
-const allDone = () => GAMES.every((g, i) => starsOf(i) > 0);
-const totalStars = () => GAMES.reduce((s, g, i) => s + starsOf(i), 0);
+const worldOf = i => Math.floor(i / 10);
+const worldIds = w => [...Array(10)].map((_, k) => w * 10 + k);
+const worldDone = w => worldIds(w).every(i => starsOf(i) > 0);
+const worldOpen = w => w === 0 || Store.d.unlockAll || worldDone(w - 1);
+const worldStars = w => worldIds(w).reduce((s, i) => s + starsOf(i), 0);
+const unlocked = i => Store.d.unlockAll || (i % 10 === 0 ? worldOpen(worldOf(i)) : starsOf(i - 1) > 0);
+/* world 2 uses the same map, mirrored and at sunset */
+const spotOf = i => { const [x, y] = SPOTS[i % 10]; return worldOf(i) ? [100 - x, y] : [x, y]; };
+const castleOf = w => w ? [11.3, 25] : [88.7, 25];
+let curWorld = 0;
 
 function iconHTML(g) {
   if (g.icon.endsWith(".png")) return `<img src="${A(g.icon)}" alt="">`;
@@ -342,16 +400,28 @@ function iconHTML(g) {
   return `<span class="emo">${g.icon}</span>`;
 }
 
-function showMap() {
+function showMap(w) {
+  if (typeof w !== "number") w = curWorld;
+  if (!worldOpen(w)) w = 0;
+  curWorld = w; Store.d.world = w; Store.save();
   exitGame(); show("mapScreen");
   const nm = Store.d.name || "φίλε μου";
   $("#who").textContent = `Γεια σου, ${nm}! 👋`;
-  $("#starTotal").textContent = `⭐ ${totalStars()} / 30`;
-  const map = $("#map"); map.innerHTML = ""; map.style.backgroundImage = `url("${A("bg_map.jpg")}")`;
+  $("#starTotal").textContent = `⭐ ${worldStars(w)} / 30`;
+  const tabs = $("#tabs"); tabs.innerHTML = "";
+  WORLDS.forEach((W, k) => {
+    const t = document.createElement("button"), open = worldOpen(k);
+    t.className = "tab" + (k === w ? " on" : "") + (open ? "" : " locked");
+    t.innerHTML = `${W.icon}<span class="long"> ${W.name}</span>${open ? "" : " 🔒"}`;
+    t.onclick = () => { Snd.tick(); if (open) showMap(k); else mapSay("Τελείωσε πρώτα και τα 10 παιχνίδια του Κόσμου 1! 🔒", -1); };
+    tabs.appendChild(t);
+  });
+  const map = $("#map"); map.innerHTML = ""; map.className = "map" + (w ? " dusk" : "");
+  const bg = document.createElement("div"); bg.className = "map-bg"; bg.style.backgroundImage = `url("${A("bg_map.jpg")}")`; map.appendChild(bg);
   fit(map, $("#mapWrap"), MAP_AR);
-  let current = GAMES.findIndex((g, i) => unlocked(i) && !starsOf(i));
-  GAMES.forEach((g, i) => {
-    const [x, y] = SPOTS[i], b = document.createElement("button");
+  const ids = worldIds(w), current = ids.find(i => unlocked(i) && !starsOf(i)) ?? -1;
+  ids.forEach(i => {
+    const g = GAMES[i], [x, y] = spotOf(i), b = document.createElement("button");
     const st = starsOf(i), open = unlocked(i);
     b.className = "spot " + (st ? "done" : open ? "open" : "locked");
     b.style.left = x + "%"; b.style.top = y + "%";
@@ -366,23 +436,25 @@ function showMap() {
     };
     map.appendChild(b);
   });
+  const done = worldDone(w), [cx, cy] = castleOf(w);
   const c = document.createElement("button");
-  c.className = "castle" + (allDone() ? " ready" : ""); c.textContent = "🏆"; c.title = "Το δίπλωμά μου";
-  c.onclick = () => { if (allDone()) showDiploma(); else mapSay("Τελείωσε και τα 10 παιχνίδια για να πάρεις το δίπλωμα! 🏆", -1); };
+  c.className = "castle" + (done ? " ready" : ""); c.textContent = "🏆"; c.title = "Το δίπλωμά μου";
+  c.style.left = cx + "%"; c.style.top = cy + "%";
+  c.onclick = () => { if (done) showDiploma(w); else mapSay("Τελείωσε και τα 10 παιχνίδια για να πάρεις το δίπλωμα! 🏆", -1); };
   map.appendChild(c);
-  const m = document.createElement("img"); m.className = "map-mascot"; m.alt = ""; m.src = A(allDone() ? "mascot_happy.png" : "mascot_point.png");
-  const at = current < 0 ? [88.7, 25] : SPOTS[current];
+  const m = document.createElement("img"); m.className = "map-mascot"; m.alt = ""; m.src = A(done ? "mascot_happy.png" : "mascot_point.png");
+  const at = current < 0 ? castleOf(w) : spotOf(current);
   m.style.left = (at[0] - 6.5) + "%"; m.style.top = (at[1] + 3) + "%";
   map.appendChild(m);
-  if (current === 0 && !starsOf(0)) mapSay("Πάτα τον κίτρινο κύκλο με το 1 για να ξεκινήσεις!", 0, 0);
-  else if (current > 0) mapSay(`Πάμε στο παιχνίδι ${current + 1}!`, current, 0);
-  else if (current < 0) mapSay("Τα κατάφερες σε όλα! Πάτα το 🏆 για το δίπλωμα!", -1, 0);
+  if (current === w * 10) mapSay(w ? "Καλώς ήρθες στον Κόσμο 2! Εδώ τα παιχνίδια είναι πιο δύσκολα. Πάτα το 11!" : "Πάτα τον κίτρινο κύκλο με το 1 για να ξεκινήσεις!", current, 0);
+  else if (current >= 0) mapSay(`Πάμε στο παιχνίδι ${current + 1}!`, current, 0);
+  else mapSay(w === 0 && !worldDone(1) ? "Τα κατάφερες! Πάτα το 🏆 για το δίπλωμα ή πήγαινε στον 🌙 Κόσμο 2!" : "Τα κατάφερες σε όλα! Πάτα το 🏆 για το δίπλωμα!", -1, 0);
 }
 let sayTimer;
 function mapSay(text, i, speak = 1) {
   const map = $("#map"); map.querySelectorAll(".say").forEach(e => e.remove());
   const s = document.createElement("div"); s.className = "say"; s.textContent = text;
-  const at = i < 0 ? [50, -4] : SPOTS[i];
+  const at = i < 0 ? [50, -4] : spotOf(i);
   s.style.left = Math.min(58, Math.max(2, at[0] - 20)) + "%";
   if (at[1] > 50) s.style.bottom = (100 - at[1] + 18) + "%"; else s.style.top = (at[1] + 7) + "%";
   map.appendChild(s);
@@ -398,7 +470,7 @@ function setProgress(n, t, num = true) {
 }
 function openGame(i, skipIntro) {
   exitGame();
-  const g = GAMES[i]; cur = { i, g, misses: 0, over: false, cleanup: () => {} };
+  const g = GAMES[i]; cur = { i, g, misses: 0, over: false, cleanup: () => {} }; curWorld = worldOf(i);
   show("gameScreen");
   $("#gTitle").textContent = `${i + 1}. ${g.title}`; $("#gSkill").textContent = g.skill;
   const st = $("#stage"); st.innerHTML = ""; st.style.backgroundImage = g.bg ? `url("${A(g.bg)}")` : "none";
@@ -432,16 +504,17 @@ function finishGame() {
   setTimeout(() => {
     if (!cur || cur.i !== i) return;
     const praise = pick(PRAISE), nm = Store.d.name ? `, ${Store.d.name}` : "";
-    const next = i < 9 ? `<button class="btn green" id="nextBtn">Επόμενο ▶</button>` : (allDone() ? `<button class="btn green" id="dipBtn">🏆 Το δίπλωμά μου</button>` : "");
+    const w = worldOf(i);
+    const next = i % 10 < 9 ? `<button class="btn green" id="nextBtn">Επόμενο ▶</button>` : (worldDone(w) ? `<button class="btn green" id="dipBtn">🏆 Το δίπλωμά μου</button>` : "");
     const o = overlay(`<img src="${A("mascot_happy.png")}" alt=""><div class="txt"><h3>${praise.replace("!", nm + "!")}</h3>
       <div class="winstars">${[0, 1, 2].map(k => `<img src="${A("star.png")}" class="${k < stars ? "" : "off"}" style="animation-delay:${k * .18}s" alt="">`).join("")}</div>
       <p>${stars === 3 ? "Πήρες και τα 3 αστέρια!" : "Παίξε ξανά για να πάρεις και τα 3 αστέρια!"}</p>
       <div class="row"><button class="btn white" id="againBtn">↻ Ξανά</button><button class="btn white" id="mapBtn">🗺️ Χάρτης</button>${next}</div></div>`);
     Voice.say(praise + " " + (Store.d.name || ""));
     o.querySelector("#againBtn").onclick = () => openGame(i, true);
-    o.querySelector("#mapBtn").onclick = showMap;
+    o.querySelector("#mapBtn").onclick = () => showMap(w);
     const nb = o.querySelector("#nextBtn"); if (nb) { nb.onclick = () => openGame(i + 1); nb.focus(); }
-    const db = o.querySelector("#dipBtn"); if (db) db.onclick = showDiploma;
+    const db = o.querySelector("#dipBtn"); if (db) db.onclick = () => showDiploma(w);
   }, 700);
 }
 function confetti() {
@@ -510,6 +583,98 @@ function makeApi() {
 }
 
 /* ================= THE 10 GAMES ================= */
+/* ---------- shared game helpers ---------- */
+const PRIZE_IMGS = ["star.png", "teddy.png", "ball.png", "butterfly.png", "bear_awake.png", "cat_awake.png", "dog.png", "bunny.png", "mole.png", "fishball.png"];
+const Yu = (u, ar) => u * ar; /* stage units (1u = 1% of width) -> % of height */
+function svgKit(api) {
+  const NS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(NS, "svg"); svg.setAttribute("viewBox", "0 0 1000 700"); svg.setAttribute("class", "svgfull"); api.stage.appendChild(svg);
+  const mk = (tag, attrs, parent = svg) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; };
+  const toSvg = e => { const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; const r = p.matrixTransform(svg.getScreenCTM().inverse()); return [r.x, r.y]; };
+  return { svg, mk, toSvg };
+}
+/* moles popping out of the 6 holes of bg_garden; opts.bunny = chance that a bunny (don't click!) pops up */
+function moleGame(api, o) {
+  const HOLES = [[18, 70], [50, 70], [82, 70], [18, 86.5], [50, 86.5], [82, 86.5]];
+  let hits = 0, cool = .8;
+  api.progress(0, o.goal);
+  api.on(api.stage, "pointerdown", () => api.miss());
+  const holes = HOLES.map(([x, y], k) => {
+    const m = api.el("div", "mask"); m.style.left = (x - 13) + "%"; m.style.width = "26%"; m.style.top = (y - 16) + "%"; m.style.height = "18%"; m.style.zIndex = k < 3 ? 2 : 3;
+    const im = new Image(); im.src = A("mole.png"); im.alt = ""; im.draggable = false; m.appendChild(im);
+    const h = { m, im, up: false, x, y, tid: 0, kind: "mole" };
+    im.addEventListener("pointerdown", e => {
+      e.stopPropagation(); if (!h.up || h.hit || !api.alive()) return;
+      h.hit = true; clearTimeout(h.tid);
+      if (h.kind === "bunny") {
+        api.miss(); Snd.boop(); api.fx(x, y - 14, "😢"); api.hint("Όχι το κουνελάκι! 🐰");
+        h.tid = setTimeout(() => down(h), 300); return;
+      }
+      m.classList.add("hit"); Snd.bonk(); hits++; api.progress(hits, o.goal);
+      api.fx(x, y - 14, pick(["💫", "⭐", "✨"]));
+      h.tid = setTimeout(() => down(h), 350);
+      if (hits >= o.goal) api.after(400, api.win);
+    });
+    return h;
+  });
+  function down(h) { h.up = false; h.hit = false; h.m.classList.remove("up", "hit"); }
+  api.loop(dt => {
+    if ((cool -= dt) > 0) return;
+    if (holes.filter(h => h.up).length >= o.want(hits)) return;
+    const free = holes.filter(h => !h.up); if (!free.length) return;
+    const h = pick(free);
+    h.kind = Math.random() < (o.bunny || 0) ? "bunny" : "mole";
+    h.im.src = A(h.kind === "bunny" ? "bunny.png" : "mole.png"); h.im.classList.toggle("bun", h.kind === "bunny");
+    h.up = true; h.m.classList.add("up");
+    const stay = o.stay0 - (o.stay0 - o.stay1) * hits / o.goal;
+    h.tid = setTimeout(() => { if (!h.hit) down(h); }, stay);
+    cool = rnd(o.cool0 ?? .4, o.cool1 ?? 1.0);
+  });
+}
+/* the mouse that follows the pointer inside a path (games 9 and 20) */
+function mazeKit(api, svg, mk, toSvg) {
+  let R = null, bumpT = 0;
+  const place = () => { R.g.setAttribute("transform", `translate(${R.m[0]},${R.m[1]})`); R.glow.setAttribute("visibility", R.state === "carry" || R.state === "won" ? "hidden" : "visible"); };
+  function load(cfg) {
+    R = Object.assign({}, cfg, { m: cfg.start.slice(), state: "wait" });
+    const w = cfg.w, end = cfg.end, cw = w * 1.05;
+    R.cheese = mk("image", { href: A("cheese.png"), x: end[0] - cw / 2, y: end[1] - cw * .4, width: cw, height: cw * .8 });
+    R.g = mk("g", {});
+    R.glow = mk("circle", { r: w * .62, fill: "rgba(255,210,63,.35)", stroke: "#ffc93c", "stroke-width": 6, "stroke-dasharray": "14 10" }, R.g);
+    const mw = w * .85, mh = mw * 1.24;
+    mk("image", { href: A("mascot.png"), x: -mw / 2, y: -mh / 2 - 8, width: mw, height: mh }, R.g);
+    place();
+  }
+  function move(p) {
+    if (!R || !api.alive() || R.state === "won") return;
+    if (R.state !== "carry") {
+      if (Math.hypot(p[0] - R.m[0], p[1] - R.m[1]) < R.w * .6) { R.state = "carry"; Snd.tick(); place(); }
+      return;
+    }
+    const m = R.m, d = Math.hypot(p[0] - m[0], p[1] - m[1]), steps = Math.max(1, Math.ceil(d / 4));
+    let last = m.slice(), ok = true;
+    for (let s = 1; s <= steps; s++) {
+      const q = [m[0] + (p[0] - m[0]) * s / steps, m[1] + (p[1] - m[1]) * s / steps];
+      if (!R.onPath(q)) { ok = false; break; } last = q;
+    }
+    R.m = last;
+    if (!ok) {
+      R.state = "lost"; Snd.boop(); api.miss();
+      const now = performance.now(); if (now - bumpT > 2500) { bumpT = now; api.hint("Ωχ, ο φράχτης! Γύρνα στον Ποντικούλη 🐭"); }
+    }
+    place();
+    if (Math.hypot(R.m[0] - R.end[0], R.m[1] - R.end[1]) < R.w * .45) {
+      R.state = "won"; place(); Snd.good();
+      R.cheese.setAttribute("class", "eat"); api.hint("Νιαμ! Τι νόστιμο τυράκι! 🧀", true, 1600);
+      R.onWin();
+    }
+  }
+  api.on(svg, "pointermove", e => move(toSvg(e)));
+  api.on(svg, "pointerdown", e => move(toSvg(e)));
+  api.on(svg, "pointerleave", () => { if (R && R.state === "carry") { R.state = "wait"; place(); } });
+  return { load };
+}
+
 const GAMES = [
 /* 1 ---------------------------------------------------------------- */
 { title: "Ακολούθα την πεταλούδα", icon: "butterfly.png", skill: "Κίνηση", bg: "bg_meadow.jpg", ar: 1350 / 909, ok: 99,
@@ -625,36 +790,7 @@ const GAMES = [
 /* 4 ---------------------------------------------------------------- */
 { title: "Ο τυφλοπόντικας", icon: "mole.png", skill: "Γρήγορο κλικ", bg: "bg_garden.jpg", ar: 1002 / 960, ok: 5,
   intro: "Ο τυφλοπόντικας βγαίνει από τις τρύπες! Κάνε του κλικ πριν κρυφτεί. Μπουπ!",
-  start(api) {
-    const GOAL = 12, HOLES = [[18, 70], [50, 70], [82, 70], [18, 86.5], [50, 86.5], [82, 86.5]];
-    let hits = 0, cool = .8;
-    api.progress(0, GOAL);
-    api.on(api.stage, "pointerdown", () => api.miss());
-    const holes = HOLES.map(([x, y], k) => {
-      const m = api.el("div", "mask"); m.style.left = (x - 13) + "%"; m.style.width = "26%"; m.style.top = (y - 16) + "%"; m.style.height = "18%"; m.style.zIndex = k < 3 ? 2 : 3;
-      const im = new Image(); im.src = A("mole.png"); im.alt = ""; im.draggable = false; m.appendChild(im);
-      const h = { m, im, up: false, x, y, tid: 0 };
-      im.addEventListener("pointerdown", e => {
-        e.stopPropagation(); if (!h.up || h.hit || !api.alive()) return;
-        h.hit = true; m.classList.add("hit"); Snd.bonk(); hits++; api.progress(hits, GOAL);
-        api.fx(x, y - 14, pick(["💫", "⭐", "✨"]));
-        clearTimeout(h.tid); h.tid = setTimeout(() => down(h), 350);
-        if (hits >= GOAL) api.after(400, api.win);
-      });
-      return h;
-    });
-    function down(h) { h.up = false; h.hit = false; h.m.classList.remove("up", "hit"); }
-    api.loop(dt => {
-      if ((cool -= dt) > 0) return;
-      const upN = holes.filter(h => h.up).length, want = hits < 5 ? 1 : 2;
-      if (upN >= want) return;
-      const free = holes.filter(h => !h.up); if (!free.length) return;
-      const h = pick(free); h.up = true; h.m.classList.add("up");
-      const stay = 2600 - 1100 * hits / GOAL;
-      h.tid = setTimeout(() => { if (!h.hit) down(h); }, stay);
-      cool = rnd(.4, 1.0);
-    });
-  } },
+  start(api) { moleGame(api, { goal: 12, bunny: 0, stay0: 2600, stay1: 1500, want: h => h < 5 ? 1 : 2 }); } },
 /* 5 ---------------------------------------------------------------- */
 { title: "Τάισε τα ζωάκια", icon: "bunny.png", skill: "Σύρσιμο", bg: "bg_farm.jpg", ar: 1002 / 960, ok: 3,
   intro: "Τα ζωάκια πεινάνε! Πάτα πάνω σε ένα φαγητό, κράτα το κουμπί πατημένο και σύρε το στο σωστό ζωάκι.",
@@ -833,59 +969,24 @@ const GAMES = [
       { w: 100, pts: [[100, 125], [520, 125], [520, 370], [170, 370], [170, 590], [880, 590], [880, 290]] },
       { w: 86, pts: [[90, 595], [90, 115], [320, 115], [320, 595], [560, 595], [560, 115], [800, 115], [800, 595], [925, 595]] }
     ];
-    const NS = "http://www.w3.org/2000/svg";
-    const svg = document.createElementNS(NS, "svg"); svg.setAttribute("viewBox", "0 0 1000 700"); svg.setAttribute("class", "svgfull"); api.stage.appendChild(svg);
-    const mk = (tag, attrs, parent = svg) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); parent.appendChild(e); return e; };
-    let mi = 0, M, m, state, mouseG, glow, cheese, bumpT = 0;
+    const { svg, mk, toSvg } = svgKit(api), kit = mazeKit(api, svg, mk, toSvg);
+    let mi = 0;
     api.progress(0, MAZES.length);
     const segD = (p, a, b) => { const dx = b[0] - a[0], dy = b[1] - a[1], l = dx * dx + dy * dy; let t = l ? ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / l : 0; t = Math.max(0, Math.min(1, t)); return Math.hypot(p[0] - a[0] - t * dx, p[1] - a[1] - t * dy); };
-    const onPath = p => { for (let k = 0; k < M.pts.length - 1; k++) if (segD(p, M.pts[k], M.pts[k + 1]) <= M.w / 2 - 6) return true; return false; };
-    const toSvg = e => { const p = svg.createSVGPoint(); p.x = e.clientX; p.y = e.clientY; const r = p.matrixTransform(svg.getScreenCTM().inverse()); return [r.x, r.y]; };
     function setup() {
-      svg.innerHTML = ""; M = MAZES[mi]; m = M.pts[0].slice(); state = "wait";
+      svg.innerHTML = ""; const M = MAZES[mi];
       const pts = M.pts.map(p => p.join(",")).join(" ");
       mk("polyline", { points: pts, fill: "none", stroke: "#7a5230", "stroke-width": M.w + 16, "stroke-linejoin": "round", "stroke-linecap": "round" });
       mk("polyline", { points: pts, fill: "none", stroke: "#f6e2b3", "stroke-width": M.w, "stroke-linejoin": "round", "stroke-linecap": "round" });
       mk("polyline", { points: pts, fill: "none", stroke: "#e2c07f", "stroke-width": 6, "stroke-dasharray": "2 22", "stroke-linecap": "round" });
-      const end = M.pts[M.pts.length - 1], cw = M.w * 1.05;
-      cheese = mk("image", { href: A("cheese.png"), x: end[0] - cw / 2, y: end[1] - cw * .4, width: cw, height: cw * .8 });
-      mouseG = mk("g", {});
-      glow = mk("circle", { r: M.w * .62, fill: "rgba(255,210,63,.35)", stroke: "#ffc93c", "stroke-width": 6, "stroke-dasharray": "14 10" }, mouseG);
-      const mw = M.w * .85, mh = mw * 1.24;
-      mk("image", { href: A("mascot.png"), x: -mw / 2, y: -mh / 2 - 8, width: mw, height: mh }, mouseG);
-      place();
+      svg.__sol = M.pts;
+      kit.load({
+        start: M.pts[0], end: M.pts[M.pts.length - 1], w: M.w,
+        onPath: p => { for (let k = 0; k < M.pts.length - 1; k++) if (segD(p, M.pts[k], M.pts[k + 1]) <= M.w / 2 - 6) return true; return false; },
+        onWin: () => { mi++; api.progress(mi, MAZES.length); api.after(1600, () => { if (mi >= MAZES.length) api.win(); else setup(); }); }
+      });
     }
-    function place() { mouseG.setAttribute("transform", `translate(${m[0]},${m[1]})`); glow.setAttribute("visibility", state === "carry" ? "hidden" : "visible"); }
     setup();
-    api.on(svg, "pointermove", e => move(toSvg(e)));
-    api.on(svg, "pointerdown", e => move(toSvg(e)));
-    api.on(svg, "pointerleave", () => { if (state === "carry") { state = "wait"; place(); } });
-    function move(p) {
-      if (!api.alive() || state === "won") return;
-      if (state !== "carry") {
-        if (Math.hypot(p[0] - m[0], p[1] - m[1]) < M.w * .6) { state = "carry"; Snd.tick(); place(); }
-        return;
-      }
-      const d = Math.hypot(p[0] - m[0], p[1] - m[1]), steps = Math.max(1, Math.ceil(d / 4));
-      let last = m.slice(), ok = true;
-      for (let s = 1; s <= steps; s++) {
-        const q = [m[0] + (p[0] - m[0]) * s / steps, m[1] + (p[1] - m[1]) * s / steps];
-        if (!onPath(q)) { ok = false; break; } last = q;
-      }
-      m = last;
-      if (!ok) {
-        state = "lost"; Snd.boop(); api.miss();
-        const now = performance.now(); if (now - bumpT > 2500) { bumpT = now; api.hint("Ωχ, ο φράχτης! Γύρνα στον Ποντικούλη 🐭"); }
-      }
-      place();
-      const end = M.pts[M.pts.length - 1];
-      if (Math.hypot(m[0] - end[0], m[1] - end[1]) < M.w * .45) {
-        state = "won"; place(); glow.setAttribute("visibility", "hidden"); Snd.good();
-        cheese.setAttribute("class", "eat"); api.hint("Νιαμ! Τι νόστιμο τυράκι! 🧀", true, 1600);
-        mi++; api.progress(mi, MAZES.length);
-        api.after(1600, () => { if (mi >= MAZES.length) api.win(); else setup(); });
-      }
-    }
   } },
 /* 10 --------------------------------------------------------------- */
 { title: "Βάψε τη ζωγραφιά", icon: "🎨", skill: "Όλα μαζί", bg: "bg_party.jpg", ar: 10 / 7, cover: true, ok: 99,
@@ -935,16 +1036,362 @@ const GAMES = [
         doneBtn = api.el("button", "btn green donebtn"); doneBtn.textContent = "Τελείωσα ✓"; doneBtn.onclick = () => api.win();
       }
     }));
+  } },
+/* ================= WORLD 2: a bit harder ================= */
+/* 11 --------------------------------------------------------------- */
+{ title: "Πιάσε τις πεταλούδες", icon: "butterfly.png", skill: "Κλικ σε κάτι που κινείται", bg: "bg_meadow.jpg", ar: 1350 / 909, ok: 8,
+  intro: "Οι πεταλούδες πετάνε παντού! Κάνε κλικ πάνω τους για να τις πιάσεις. Πιάσε 10!",
+  start(api) {
+    const GOAL = 10; let n = 0; const bs = [];
+    api.progress(0, GOAL);
+    api.on(api.stage, "pointerdown", () => api.miss());
+    function spawn() {
+      const el = api.sprite("butterfly.png", "bf2");
+      const b = { el, x: rnd(15, 85), y: rnd(20, 75), a: rnd(0, 6.28), sp: rnd(13, 18) + 7 * n / GOAL };
+      el.style.width = `calc(var(--u)*${10 - 3 * n / GOAL})`;
+      el.addEventListener("pointerdown", e => {
+        e.stopPropagation(); if (b.dead || !api.alive()) return;
+        b.dead = true; bs.splice(bs.indexOf(b), 1); n++; Snd.good(); api.fx(b.x, b.y, "✨");
+        el.classList.add("caught"); setTimeout(() => el.remove(), 400); api.progress(n, GOAL);
+        if (n >= GOAL) api.win(); else if (n <= GOAL - 3) api.after(700, spawn);
+      });
+      bs.push(b);
+    }
+    spawn(); spawn(); spawn();
+    api.loop(dt => {
+      const k = api.W() / api.H();
+      for (const b of bs) {
+        b.a += rnd(-3, 3) * dt;
+        if (b.x < 10 || b.x > 90 || b.y < 14 || b.y > 86) {
+          const ta = Math.atan2((50 - b.y) / k, 50 - b.x); let d = ta - b.a;
+          d = Math.atan2(Math.sin(d), Math.cos(d)); b.a += d * Math.min(1, dt * 4);
+        }
+        b.x += Math.cos(b.a) * b.sp * dt; b.y += Math.sin(b.a) * b.sp * dt * k;
+        api.put(b.el, b.x, b.y);
+      }
+    });
+  } },
+/* 12 --------------------------------------------------------------- */
+{ title: "Σκάσε μόνο τις σωστές", icon: "🍓", skill: "Προσεκτικό κλικ", bg: "bg_sky.jpg", ar: 1350 / 909, ok: 3,
+  intro: "Κοίτα πάνω αριστερά ποιες φούσκες πρέπει να σκάσεις. Σκάσε μόνο αυτές! Οι άλλες δεν σκάνε.",
+  start(api) {
+    const GOAL = 15, SET = { "🍓": "τις φράουλες", "🐟": "τα ψαράκια", "⭐": "τα αστεράκια", "🐞": "τις πασχαλίτσες" }, KEYS = Object.keys(SET);
+    let n = 0, sT = 0, target = pick(KEYS); const live = new Set();
+    const box = api.el("div", "badgebox");
+    const setTarget = () => { box.innerHTML = `Μόνο: <span style="font-size:1.6em">${target}</span>`; };
+    setTarget(); api.after(400, () => api.say("Σκάσε μόνο " + SET[target]));
+    api.progress(0, GOAL);
+    api.on(api.stage, "pointerdown", () => api.miss());
+    function spawn() {
+      const b = api.el("div", "bubble"), size = 14 - 4 * n / GOAL;
+      b.style.width = b.style.height = `calc(var(--u)*${size})`;
+      const emo = Math.random() < .45 ? target : pick(KEYS.filter(e => e !== target));
+      b.innerHTML = `<span>${emo}</span>`;
+      const o = { el: b, emo, x: rnd(10, 90), y: 115, sp: rnd(13, 17) + 5 * n / GOAL, ph: rnd(0, 6) };
+      b.addEventListener("pointerdown", e => {
+        e.stopPropagation(); if (o.dead || !api.alive()) return;
+        if (o.emo !== target) {
+          api.miss(); Snd.boop(); b.classList.remove("nope"); void b.offsetWidth; b.classList.add("nope");
+          api.hint(`Αυτή δεν σκάει! Μόνο ${target}`, false); return;
+        }
+        o.dead = true; live.delete(o); n++; Snd.pop(); b.classList.add("popped");
+        api.fx(o.cx, o.y, "✨"); setTimeout(() => b.remove(), 320); api.progress(n, GOAL);
+        if (n >= GOAL) return api.win();
+        if (n % 5 === 0) { target = pick(KEYS.filter(e => e !== target)); setTarget(); api.hint(`Άλλαξε! Τώρα μόνο ${target}`, false, 2200); api.say("Τώρα σκάσε μόνο " + SET[target]); }
+      });
+      live.add(o);
+    }
+    api.loop((dt, t) => {
+      if ((sT -= dt) <= 0 && live.size < 6) { spawn(); sT = rnd(.7, 1.2); }
+      for (const o of live) {
+        o.y -= o.sp * dt; o.cx = o.x + 2.5 * Math.sin(t * 1.4 + o.ph);
+        if (o.y < -20) { o.el.remove(); live.delete(o); continue; }
+        api.put(o.el, o.cx, o.y);
+      }
+    });
+  } },
+/* 13 --------------------------------------------------------------- */
+{ title: "Ο φακός στο σκοτάδι", icon: "🔦", skill: "Κίνηση και κλικ", bg: "bg_farm.jpg", ar: 1002 / 960, ok: 8,
+  intro: "Νύχτωσε στη φάρμα! Κούνα το ποντίκι για να φωτίσεις με τον φακό. Όταν βρεις ένα ζωάκι, κάνε του κλικ.",
+  start(api) {
+    const LIST = [["bear_awake.png", 10], ["cat_awake.png", 10], ["dog.png", 9], ["bunny.png", 8], ["owl.png", 7], ["mole.png", 10]];
+    const SPOTS = shuffle([[12, 40], [30, 72], [48, 55], [70, 68], [88, 45], [20, 58], [58, 78], [84, 76], [40, 30], [65, 38], [8, 75], [93, 62]]);
+    let found = 0;
+    api.progress(0, LIST.length);
+    api.on(api.stage, "pointerdown", () => api.miss());
+    const dark = api.el("div", "dark"), list = api.el("div", "findlist");
+    const light = e => { const p = api.pt(e); dark.style.setProperty("--mx", p.px + "px"); dark.style.setProperty("--my", p.py + "px"); };
+    api.on(api.stage, "pointermove", light); api.on(api.stage, "pointerdown", light);
+    LIST.forEach(([img, w], k) => {
+      const mini = new Image(); mini.src = A(img); mini.alt = ""; list.appendChild(mini);
+      const el = api.sprite(img, "hide"); el.style.width = `calc(var(--u)*${w})`; api.put(el, SPOTS[k][0], SPOTS[k][1]);
+      el.addEventListener("pointerdown", e => {
+        light(e); e.stopPropagation(); if (el.classList.contains("found") || !api.alive()) return;
+        el.classList.add("found"); mini.classList.add("on"); Snd.good(); found++; api.progress(found, LIST.length);
+        api.fx(SPOTS[k][0], SPOTS[k][1] - 8, "⭐");
+        if (found === LIST.length) api.after(700, api.win);
+      });
+    });
+  } },
+/* 14 --------------------------------------------------------------- */
+{ title: "Πρόσεχε το κουνελάκι", icon: "🐰", skill: "Γρήγορο και προσεκτικό κλικ", bg: "bg_garden.jpg", ar: 1002 / 960, ok: 4,
+  intro: "Κάνε κλικ στους τυφλοπόντικες, αλλά ΟΧΙ στο κουνελάκι! Τώρα βγαίνουν πιο γρήγορα.",
+  start(api) { moleGame(api, { goal: 15, bunny: .3, stay0: 1900, stay1: 1100, cool0: .25, cool1: .7, want: h => h < 5 ? 2 : 3 }); } },
+/* 15 --------------------------------------------------------------- */
+{ title: "Το ψηλό δέντρο", icon: "🌳", skill: "Ροδέλα του ποντικιού", bg: null, ar: 10 / 7, ok: 3,
+  intro: "Γύρνα τη ροδέλα του ποντικιού για να ανέβεις και να κατέβεις στο δέντρο. Βρες αυτό που σου λέω και κάνε του κλικ.",
+  start(api) {
+    const ITEMS = [["cat_branch.png", "τη γάτα", 16], ["owl_sleep.png", "την κουκουβάγια", 11], ["butterfly.png", "την πεταλούδα", 11], ["star.png", "το αστεράκι", 10],
+      ["cheese.png", "το τυρί", 12], ["ball.png", "τη μπάλα", 9], ["gift.png", "το δώρο", 10], ["dog.png", "το σκυλάκι", 11]];
+    const HS = [89, 78, 67, 56, 45, 34, 23, 12];
+    const sc = api.el("div", "scroller"), tall = api.el("div", "tall", sc);
+    api.el("div", "trunk", tall);
+    [["☁️", 20, 70], ["☁️", 80, 50], ["☁️", 15, 30], ["🎈", 86, 62], ["✈️", 22, 44], ["🌙", 82, 6], ["✨", 18, 5], ["🚀", 60, 3], ["✨", 38, 14], ["☁️", 72, 84], ["🐦", 28, 80], ["✨", 88, 18]]
+      .forEach(([e, x, y]) => { const d = api.el("div", "deco", tall); d.textContent = e; api.put(d, x, y); });
+    const hs = shuffle(HS);
+    const items = ITEMS.map(([img, name, w], k) => {
+      const y = hs[k], left = HS.indexOf(y) % 2 === 0, x = left ? 27 : 73;
+      const br = api.el("div", "branch", tall); br.style.top = (y + 2) + "%"; br.style.left = (left ? x : 50) + "%"; br.style.width = Math.abs(x - 50) + "%";
+      const el = api.sprite(img, "titem", tall); el.style.width = `calc(var(--u)*${w})`; api.put(el, x, y);
+      return { el, name, img, k };
+    });
+    const box = api.el("div", "badgebox"), up = api.el("div", "sarrow up"), dn = api.el("div", "sarrow down");
+    up.textContent = "⬆️"; dn.textContent = "⬇️";
+    const order = shuffle(items).slice(0, 6); let ti = 0;
+    api.progress(0, order.length);
+    const arrows = () => {
+      const T = order[ti]; if (!T) { up.hidden = dn.hidden = true; return; }
+      const r = T.el.getBoundingClientRect(), s = sc.getBoundingClientRect();
+      up.hidden = !(r.bottom < s.top + 20); dn.hidden = !(r.top > s.bottom - 20);
+    };
+    const ask = () => { const T = order[ti]; box.innerHTML = `Βρες ${T.name} <img src="${A(T.img)}" alt="">`; api.say("Βρες " + T.name); arrows(); };
+    api.on(sc, "scroll", arrows);
+    items.forEach(it => it.el.addEventListener("click", () => {
+      if (!api.alive() || !order[ti]) return;
+      if (it !== order[ti]) { api.miss(); Snd.boop(); api.hint(`Αυτό είναι άλλο. Βρες ${order[ti].name}!`); return; }
+      it.el.classList.add("found"); Snd.good(); ti++; api.progress(ti, order.length);
+      if (ti >= order.length) { box.textContent = "Τα βρήκες όλα! 🎉"; arrows(); api.after(800, api.win); }
+      else api.after(700, ask);
+    }));
+    sc.scrollTop = sc.scrollHeight;
+    ask(); api.after(2600, () => api.hint("Γύρνα τη ροδέλα του ποντικιού! 🖱️", false, 3000));
+  } },
+/* 16 --------------------------------------------------------------- */
+{ title: "Το πάζλ", icon: "🧩", skill: "Σύρσιμο με ακρίβεια", bg: "bg_sky.jpg", ar: 10 / 7, cover: true, ok: 4,
+  intro: "Σύρε κάθε κομμάτι στη σωστή θέση για να φτιάξεις την εικόνα.",
+  start(api) {
+    const AR = 10 / 7, ROUNDS = [{ img: "bg_farm.jpg", c: 2, r: 2, guide: .3 }, { img: "bg_party.jpg", c: 3, r: 2, guide: .18 }];
+    const total = ROUNDS.reduce((s, R) => s + R.c * R.r, 0);
+    let ri = 0, placed = 0;
+    api.progress(0, total);
+    function setup() {
+      api.stage.querySelectorAll(".board,.piece").forEach(e => e.remove());
+      const R = ROUNDS[ri], bw = 46, bh = 44, top = (70 - bh) / 2;
+      const board = api.el("div", "board"); Object.assign(board.style, { left: "5%", top: Yu(top, AR) + "%", width: bw + "%", height: Yu(bh, AR) + "%" });
+      const guide = api.el("div", "guide", board); guide.style.backgroundImage = `url("${A(R.img)}")`; guide.style.opacity = R.guide;
+      const slots = [];
+      for (let r = 0; r < R.r; r++) for (let c = 0; c < R.c; c++) {
+        const s = api.el("div", "slot", board); Object.assign(s.style, { left: c * 100 / R.c + "%", top: r * 100 / R.r + "%", width: 100 / R.c + "%", height: 100 / R.r + "%" });
+        slots.push({ el: s, id: r * R.c + c });
+      }
+      const pw = bw / R.c, ph = bh / R.r, xs = [66, 88], rows = Math.ceil(R.c * R.r / 2);
+      const homes = []; for (let k = 0; k < R.c * R.r; k++) homes.push([xs[k % 2], Yu(70 * (Math.floor(k / 2) + .5) / rows, AR) * 1]);
+      const hs = shuffle(homes); let left = R.c * R.r;
+      slots.forEach((s, k) => {
+        const c = k % R.c, r = Math.floor(k / R.c), p = api.el("div", "piece");
+        Object.assign(p.style, { width: pw + "%", height: Yu(ph, AR) + "%", backgroundImage: `url("${A(R.img)}")`, backgroundSize: `${R.c * 100}% ${R.r * 100}%`, backgroundPosition: `${c / (R.c - 1) * 100}% ${r / (R.r - 1) * 100}%` });
+        api.drag(p, hs[k], {
+          targets: () => slots,
+          drop(t) {
+            if (t.id !== s.id) { api.miss(); Snd.boop(); api.hint("Όχι εδώ. Κοίτα καλά την εικόνα! 🔍"); return false; }
+            p.dataset.done = 1; const cc = api.center(t.el); api.put(p, cc.x, cc.y); p.classList.add("placed");
+            Snd.good(); placed++; api.progress(placed, total);
+            if (--left === 0) api.after(1000, () => { if (++ri >= ROUNDS.length) api.win(); else setup(); });
+            return true;
+          }
+        });
+      });
+    }
+    setup();
+  } },
+/* 17 --------------------------------------------------------------- */
+{ title: "Από το μικρό στο μεγάλο", icon: "📏", skill: "Σύρσιμο και σειρά", bg: "bg_meadow.jpg", ar: 1350 / 909, ok: 3,
+  intro: "Βάλε τα στη σειρά: το πιο μικρό στην πρώτη θέση αριστερά, το πιο μεγάλο στην τελευταία δεξιά.",
+  start(api) {
+    const ROUNDS = ["star.png", "teddy.png", "gift.png"], SIZES = [6, 9, 12, 15], XS = [20, 40, 60, 80];
+    let ri = 0, placed = 0; const total = ROUNDS.length * 4;
+    api.progress(0, total);
+    const lbl = api.el("div", "sizelbl"); lbl.innerHTML = "<span>μικρό</span><span>➜ ➜ ➜</span><span>μεγάλο</span>";
+    const slots = XS.map((x, k) => { const el = api.el("div", "oslot"); api.put(el, x, 64); return { el, k }; });
+    function setup() {
+      api.stage.querySelectorAll(".sitem").forEach(e => e.remove());
+      const xs = shuffle(XS); let left = 4;
+      SIZES.forEach((sz, rank) => {
+        const it = api.sprite(ROUNDS[ri], "item sitem"); it.style.width = `calc(var(--u)*${sz})`;
+        api.drag(it, [xs[rank], 24], {
+          targets: () => slots,
+          drop(t) {
+            if (t.k !== rank) { api.miss(); Snd.boop(); api.hint("Όχι αυτή η θέση. Κοίτα το μέγεθος! 🔍"); return false; }
+            it.dataset.done = 1; api.put(it, XS[t.k], 64); Snd.good(); placed++; api.progress(placed, total);
+            if (--left === 0) api.after(1000, () => { if (++ri >= ROUNDS.length) api.win(); else setup(); });
+            return true;
+          }
+        });
+      });
+    }
+    setup();
+  } },
+/* 18 --------------------------------------------------------------- */
+{ title: "Τα δώρα με τους αριθμούς", icon: "gift.png", skill: "Γρήγορο διπλό κλικ", bg: "bg_party.jpg", ar: 999 / 960, ok: 4,
+  intro: "Άνοιξε τα δώρα με τη σειρά: πρώτα το 1, μετά το 2, το 3… Θέλει γρήγορο διπλό κλικ!",
+  start(api) {
+    const POS = []; [52, 86].forEach(y => [17, 39, 61, 83].forEach(x => POS.push([x, y])));
+    const nums = shuffle([1, 2, 3, 4, 5, 6, 7, 8]), prizes = shuffle(PRIZE_IMGS);
+    let next = 1, singles = 0;
+    const box = api.el("div", "badgebox"), upd = () => { box.textContent = `Άνοιξε το: ${next}`; }; upd();
+    api.progress(0, 8);
+    api.on(api.stage, "pointerdown", () => api.miss());
+    POS.forEach(([x, y], k) => {
+      const num = nums[k], g = api.sprite("gift.png", "gift bottom"); api.put(g, x, y);
+      const lb = api.el("div", "num", g); lb.textContent = num;
+      let last = 0;
+      const tryOpen = () => {
+        if (g.dataset.open || !api.alive()) return; g._t = performance.now(); last = 0;
+        if (num !== next) {
+          api.miss(); Snd.boop(); g.classList.remove("shake"); void g.offsetWidth; g.classList.add("shake");
+          api.hint(`Αυτό είναι το ${num}. Ψάξε το ${next}! 🔎`); return;
+        }
+        g.dataset.open = 1; g.querySelector("img").src = A("gift_open.png");
+        const p = new Image(); p.src = A(prizes[k % prizes.length]); p.className = "prize"; p.alt = ""; g.appendChild(p);
+        lb.classList.add("ok"); Snd.good(); api.fx(x, y - 30, "🎉");
+        next++; api.progress(next - 1, 8);
+        if (next > 8) { box.textContent = "Τα άνοιξες όλα! 🎉"; api.after(900, api.win); } else upd();
+      };
+      g.addEventListener("pointerdown", e => {
+        e.stopPropagation(); if (g.dataset.open) return;
+        const now = performance.now();
+        if (now - last < 500) { tryOpen(); return; }
+        last = now; Snd.tick(); g.classList.remove("tap"); void g.offsetWidth; g.classList.add("tap");
+        if (++singles % 4 === 0) api.hint("Πιο γρήγορα: κλικ-κλικ! 👆👆");
+      });
+      g.addEventListener("dblclick", () => { if (performance.now() - (g._t || 0) > 400) tryOpen(); });
+    });
+  } },
+/* 19 --------------------------------------------------------------- */
+{ title: "Ακολούθησε τον δρόμο", icon: "✏️", skill: "Κράτημα με ακρίβεια", bg: "bg_sky.jpg", ar: 10 / 7, cover: true, ok: 4,
+  intro: "Πάτα στον κίτρινο κύκλο, κράτα το κουμπί πατημένο και ζωγράφισε πάνω στον δρόμο μέχρι το αστέρι.",
+  start(api) {
+    const dens = (pts, step = 8) => { const out = [pts[0]]; for (let k = 1; k < pts.length; k++) { const a = pts[k - 1], b = pts[k], n = Math.max(1, Math.round(Math.hypot(b[0] - a[0], b[1] - a[1]) / step)); for (let s = 1; s <= n; s++) out.push([a[0] + (b[0] - a[0]) * s / n, a[1] + (b[1] - a[1]) * s / n]); } return out; };
+    const wave = [], spiral = [];
+    for (let k = 0; k <= 60; k++) wave.push([130 + 740 * k / 60, 360 + 120 * Math.sin(k / 60 * 3 * Math.PI)]);
+    for (let k = 0; k <= 160; k++) { const t = k / 160, a = t * 4 * Math.PI + Math.PI, r = 255 - 200 * t; spiral.push([500 + r * Math.cos(a), 360 + r * .9 * Math.sin(a)]); }
+    const SHAPES = [
+      { name: "Το κύμα! 🌊", pts: dens(wave) },
+      { name: "Τα βουνά! ⛰️", pts: dens([[120, 520], [250, 210], [380, 520], [510, 210], [640, 520], [770, 210], [880, 520]]) },
+      { name: "Το σαλιγκάρι! 🐌", pts: dens(spiral) }
+    ];
+    const { svg, mk, toSvg } = svgKit(api);
+    let si = 0, S, k, n, drawing = false, done = false, trail, resume, lastNote = -1;
+    api.progress(0, SHAPES.length);
+    function showResume() { const p = S.pts[k]; resume.setAttribute("transform", `translate(${p[0]},${p[1]})`); resume.setAttribute("visibility", drawing || done ? "hidden" : "visible"); }
+    function setup() {
+      svg.innerHTML = ""; S = SHAPES[si]; k = 0; n = S.pts.length; done = false; drawing = false; lastNote = -1;
+      mk("rect", { x: 30, y: 25, width: 940, height: 650, rx: 40, fill: "#fffdf6", "fill-opacity": .94, stroke: "#35285a", "stroke-width": 5 });
+      const d = S.pts.map(p => p.join(",")).join(" ");
+      mk("polyline", { points: d, fill: "none", stroke: "#b9c6ef", "stroke-width": 74, "stroke-linecap": "round", "stroke-linejoin": "round" });
+      mk("polyline", { points: d, fill: "none", stroke: "#eef3ff", "stroke-width": 62, "stroke-linecap": "round", "stroke-linejoin": "round" });
+      mk("polyline", { points: d, fill: "none", stroke: "#9aa9dd", "stroke-width": 5, "stroke-dasharray": "3 16", "stroke-linecap": "round" });
+      trail = mk("polyline", { points: "", fill: "none", stroke: "#ff5d8f", "stroke-width": 22, "stroke-linecap": "round", "stroke-linejoin": "round" });
+      const e = S.pts[n - 1]; mk("image", { href: A("star.png"), x: e[0] - 42, y: e[1] - 42, width: 84, height: 84 });
+      resume = mk("g", { class: "dot next" }); mk("circle", { cx: 0, cy: 0, r: 28 }, resume);
+      svg.__pts = S.pts; showResume();
+    }
+    setup();
+    api.on(svg, "pointerdown", e => {
+      if (done || !api.alive()) return; const p = toSvg(e), q = S.pts[k];
+      if (Math.hypot(p[0] - q[0], p[1] - q[1]) < 50) { drawing = true; try { svg.setPointerCapture(e.pointerId); } catch (_) {} showResume(); Snd.tick(); }
+      else api.hint("Ξεκίνα από τον κίτρινο κύκλο!");
+    });
+    api.on(svg, "pointermove", e => {
+      if (!drawing) return; const p = toSvg(e);
+      let best = -1, minD = 1e9;
+      for (let j = k; j < Math.min(n, k + 20); j++) { const d = Math.hypot(p[0] - S.pts[j][0], p[1] - S.pts[j][1]); if (d < minD) minD = d; if (d < 40) best = j; }
+      if (best > k) {
+        k = best; trail.setAttribute("points", S.pts.slice(0, k + 1).map(q => q.join(",")).join(" "));
+        const nt = Math.floor(k / n * 8); if (nt !== lastNote) { lastNote = nt; Snd.note(nt * 2); }
+        if (k >= n - 2) finish();
+      } else if (minD > 70) {
+        drawing = false; api.miss(); Snd.boop(); showResume();
+        api.hint("Βγήκες από τον δρόμο! Συνέχισε από τον κίτρινο κύκλο.");
+      }
+    });
+    const up = () => { if (!drawing) return; drawing = false; if (!done) { showResume(); api.hint("Κράτα το κουμπί πατημένο μέχρι το αστέρι! ⭐"); } };
+    api.on(svg, "pointerup", up); api.on(svg, "pointercancel", up);
+    function finish() {
+      done = true; drawing = false; showResume(); Snd.good(); si++; api.progress(si, SHAPES.length);
+      const t = mk("text", { x: 500, y: 660, "text-anchor": "middle", style: "font:800 48px var(--font);fill:#35285a" }); t.textContent = S.name;
+      api.say(S.name);
+      api.after(1800, () => { if (si >= SHAPES.length) api.win(); else setup(); });
+    }
+  } },
+/* 20 --------------------------------------------------------------- */
+{ title: "Ο μεγάλος λαβύρινθος", icon: "cheese.png", skill: "Μεγάλη ακρίβεια", bg: "bg_meadow.jpg", ar: 10 / 7, cover: true, ok: 6,
+  intro: "Ένας αληθινός λαβύρινθος! Βάλε το βελάκι στον Ποντικούλη και βρες τον δρόμο μέχρι το τυρί.",
+  start(api) {
+    const SIZES = [[5, 3], [6, 4], [8, 5]];
+    const { svg, mk, toSvg } = svgKit(api), kit = mazeKit(api, svg, mk, toSvg);
+    let mi = 0;
+    api.progress(0, SIZES.length);
+    function gen(C, R) { /* random depth-first maze: list of open passages between cells */
+      const seen = new Array(C * R).fill(false), pass = [], st = [0]; seen[0] = true;
+      while (st.length) {
+        const c = st[st.length - 1], x = c % C, y = Math.floor(c / C), nb = [];
+        if (x > 0) nb.push(c - 1); if (x < C - 1) nb.push(c + 1); if (y > 0) nb.push(c - C); if (y < R - 1) nb.push(c + C);
+        const opts = nb.filter(q => !seen[q]); if (!opts.length) { st.pop(); continue; }
+        const q = pick(opts); seen[q] = true; pass.push([c, q]); st.push(q);
+      }
+      return pass;
+    }
+    function solve(C, R, pass) {
+      const adj = [...Array(C * R)].map(() => []); pass.forEach(([a, b]) => { adj[a].push(b); adj[b].push(a); });
+      const prev = new Array(C * R).fill(-1), q = [0]; prev[0] = 0;
+      while (q.length) { const c = q.shift(); for (const d of adj[c]) if (prev[d] < 0) { prev[d] = c; q.push(d); } }
+      const path = []; for (let c = C * R - 1; c !== 0; c = prev[c]) path.unshift(c); path.unshift(0); return path;
+    }
+    function setup() {
+      svg.innerHTML = ""; const [C, R] = SIZES[mi];
+      const s = Math.min(880 / C, 600 / R), ox = (1000 - s * C) / 2, oy = (700 - s * R) / 2, w = s * .5;
+      const cen = k => [ox + s * (k % C + .5), oy + s * (Math.floor(k / C) + .5)];
+      const pass = gen(C, R), rects = [];
+      for (let k = 0; k < C * R; k++) { const [x, y] = cen(k); rects.push([x - w / 2, y - w / 2, w, w]); }
+      pass.forEach(([a, b]) => { const [x1, y1] = cen(a), [x2, y2] = cen(b); rects.push([Math.min(x1, x2) - w / 2, Math.min(y1, y2) - w / 2, Math.abs(x2 - x1) + w, Math.abs(y2 - y1) + w]); });
+      mk("rect", { x: ox - 16, y: oy - 16, width: s * C + 32, height: s * R + 32, rx: 26, fill: "#4f9d4a", stroke: "#2d6a2d", "stroke-width": 6 });
+      rects.forEach(r => mk("rect", { x: r[0], y: r[1], width: r[2], height: r[3], fill: "#f6e2b3" }));
+      const M = 4, onPath = p => rects.some(r => p[0] >= r[0] + M && p[0] <= r[0] + r[2] - M && p[1] >= r[1] + M && p[1] <= r[1] + r[3] - M);
+      svg.__sol = solve(C, R, pass).map(cen);
+      kit.load({
+        start: cen(0), end: cen(C * R - 1), w, onPath,
+        onWin: () => { mi++; api.progress(mi, SIZES.length); api.after(1600, () => { if (mi >= SIZES.length) api.win(); else setup(); }); }
+      });
+    }
+    setup();
   } }
+
 ];
 
 /* ---------- diploma ---------- */
-function showDiploma() {
+function showDiploma(w = curWorld) {
   exitGame(); show("diploma");
   $("#diploma").style.backgroundImage = `url("${A("bg_meadow.jpg")}")`;
+  $("#dipCard").classList.toggle("gold", w === 1);
+  $("#dipTitle").textContent = w ? "ΧΡΥΣΟ ΔΙΠΛΩΜΑ ΠΟΝΤΙΚΙΟΥ" : "ΔΙΠΛΩΜΑ ΠΟΝΤΙΚΙΟΥ";
   $("#dipName").textContent = Store.d.name || "τον μικρό μας φίλο";
-  $("#dipStars").textContent = `⭐ ${totalStars()} αστέρια από 30 · ${new Date().toLocaleDateString("el-GR", { day: "numeric", month: "long", year: "numeric" })}`;
-  Snd.win(); confetti(); Voice.say("Συγχαρητήρια " + (Store.d.name || "") + "! Πήρες το δίπλωμα ποντικιού!");
+  $("#dipText").textContent = w ? "γιατί τα κατάφερε και στα 10 δύσκολα παιχνίδια του Κόσμου 2!" : "γιατί τα κατάφερε και στα 10 παιχνίδια στον Κόσμο του Ποντικούλη!";
+  const sk = w ? ["κινούμενοι στόχοι", "προσοχή", "ροδέλα", "πάζλ", "σειρά", "γρήγορο διπλό κλικ", "ίχνος", "λαβύρινθος"] : ["κίνηση", "κλικ", "διπλό κλικ", "σύρσιμο", "κράτημα", "ακρίβεια"];
+  $("#dipSkills").innerHTML = sk.map(x => `<span>${x}</span>`).join("");
+  $("#dipStars").textContent = `⭐ ${worldStars(w)} αστέρια από 30 · ${new Date().toLocaleDateString("el-GR", { day: "numeric", month: "long", year: "numeric" })}`;
+  $("#dipBack").onclick = () => showMap(w);
+  Snd.win(); confetti(); Voice.say("Συγχαρητήρια " + (Store.d.name || "") + "! Πήρες το " + (w ? "χρυσό " : "") + "δίπλωμα ποντικιού!");
 }
 
 /* ---------- settings ---------- */
@@ -976,6 +1423,7 @@ function applyCursor() { $("#app").classList.toggle("bigcur", !!Store.d.bigCurso
 
 /* ---------- boot ---------- */
 Store.load(); Voice.init(); applyCursor();
+curWorld = Store.d.world === 1 ? 1 : 0;
 document.querySelectorAll("img[data-src]").forEach(i => { i.src = A(i.dataset.src); i.draggable = false; });
 $("#start").style.backgroundImage = `url("${A("bg_meadow.jpg")}")`;
 $("#nameIn").value = Store.d.name || "";
@@ -984,9 +1432,8 @@ $("#startForm").addEventListener("submit", e => {
   Store.d.name = $("#nameIn").value.trim().slice(0, 18); Store.save(); showMap();
 });
 $("#setBtn").onclick = openSettings;
-$("#homeBtn").onclick = showMap;
+$("#homeBtn").onclick = () => showMap();
 $("#sayBtn").onclick = () => { if (!cur) return; if (Voice.can() && Store.d.voice) Voice.say(cur.g.intro); else { const st = $("#stage"); const h = document.createElement("div"); h.className = "hint"; h.style.whiteSpace = "normal"; h.style.width = "80%"; h.style.fontSize = "calc(var(--u)*2.2)"; h.textContent = cur.g.intro; st.appendChild(h); setTimeout(() => h.remove(), 6000); } };
-$("#dipBack").onclick = showMap;
 let inFrame = false; try { inFrame = window.self !== window.top; } catch (e) { inFrame = true; }
 if (inFrame) $("#dipPrint").hidden = true; else $("#dipPrint").onclick = () => window.print();
 document.addEventListener("dragstart", e => e.preventDefault());
